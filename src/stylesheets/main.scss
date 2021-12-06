@@ -1,0 +1,327 @@
+// Additional styles file which generally contains utilities / reusable classes in components.
+// This is an addition to general styles from PrimeVue Components/Themes
+// and styles only for components (which are in components directly, in <style> brackets)
+
+
+// General styling
+body {
+  background-color: black;
+}
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+
+.reminder {
+  color: black !important;
+  // background-color: rgba(225, 255, 0, 0.7);
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.absence {
+  color: black !important;
+  opacity: 1;
+  // background-color: rgba(255, 30, 30, 0.5);
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+// Font for logo header and footer
+@import url("https://fonts.googleapis.com/css?family=Russo+One");
+.p-text-RussoOne {
+  font-family: "Russo One", sans-serif;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700);
+.p-text-OSC {
+  font-family: "Open Sans Condensed";
+  letter-spacing: 0.15rem;
+}
+
+// Customizing scrollbars
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--surface-a);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--text-color-secondary);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bluegray-100);
+}
+
+
+// Grids and containers boxes
+.flexgrid {
+  background-color: var(--surface-b);
+  color: var(--text-color);
+
+  .vertical-container {
+    margin: 0;
+    height: 97%;
+    width: 100%;
+    background: var(--surface-d);
+    border-radius: 4px;
+  }
+}
+
+.p-grid-all {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.p-grid-nested-router {
+  min-height: calc(98vh - 90px) !important;
+}
+
+.p-border-grid {
+  box-sizing: border-box;
+  border-right: 10px solid var(--surface-a) !important;
+}
+
+
+// Cursors styles
+.p-cursor-pointer {
+  cursor: pointer;
+}
+
+.p-default-cursor {
+  cursor: default !important;
+  &:hover {
+    cursor: default !important;
+  }
+}
+
+
+//Table responsive system
+.p-users-table {
+  height: 87vh !important;
+  font-size: 1rem !important;
+  text-wrap: normal !important;
+
+  @media screen and (max-width: 1700px) {
+    height: 85.5vh !important;
+  }
+  @media screen and (max-width: 1600px) {
+    height: 84.5vh !important;
+  }
+  @media screen and (max-width: 1500px) {
+    height: 84vh !important;
+  }
+  @media screen and (max-width: 1400px) {
+    height: 83vh !important;
+  }
+  @media screen and (max-width: 1300px) {
+    height: 82vh !important;
+  }
+
+  @media screen and (max-width: 1400px) {
+    font-size: 0.8rem !important;
+  }
+}
+
+.p-logs-table {
+  height: 62vh !important;
+  font-size: 1rem !important;
+  text-wrap: normal !important;
+
+  @media screen and (max-width: 1700px) {
+    height: 85.5vh !important;
+  }
+  @media screen and (max-width: 1600px) {
+    height: 84.5vh !important;
+  }
+  @media screen and (max-width: 1500px) {
+    height: 84vh !important;
+  }
+  @media screen and (max-width: 1400px) {
+    height: 83vh !important;
+  }
+  @media screen and (max-width: 1300px) {
+    height: 82vh !important;
+  }
+
+  @media screen and (max-width: 1400px) {
+    font-size: 0.8rem !important;
+  }
+}
+
+.p-datatable-wrapper {
+  background-color: var(--surface-a);
+}
+
+.p-table-center-flex {
+  display: flex !important;
+  flex: 1 1 10rem !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+
+// Tables styling helpers
+.p-overflow {
+  overflow: hidden;
+  white-space: nowrap;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
+  width: 85%;
+}
+
+.p-white-space-no-wrap {
+  overflow: hidden !important;
+  white-space: nowrap;
+}
+
+.p-tooltip {
+  max-width: 66vw !important;
+}
+
+.p-column-header {
+  background-color: var(--surface-a) !important;
+  &:hover {
+    background-color: var(--surface-b) !important;
+  }
+}
+
+.p-color-remove {
+  color: red;
+}
+
+.p-color-edit {
+  color: var(--yellow-300)
+}
+
+.p-color-action {
+  color: #17a2b8
+}
+
+.p-user-data-text {
+  font-weight: 500;
+  opacity: 0.6 !important;
+}
+
+img {
+  vertical-align: middle;
+}
+
+.center {
+  margin: 0 auto;
+}
+
+::v-deep(.p-paginator) {
+  .p-paginator-current {
+    margin-left: auto;
+    cursor: default !important;
+    & span {
+      cursor: default !important;
+    }
+  }
+}
+
+.p-paginator-current {
+  margin-left: auto;
+  cursor: default;
+}
+
+::v-deep(.p-progressbar) {
+  height: 0.5rem;
+  background-color: #d8dadc;
+
+  .p-progressbar-value {
+    background-color: #607d8b;
+  }
+}
+
+::v-deep(.p-datepicker) {
+  min-width: 25rem;
+
+  td {
+    font-weight: 400;
+  }
+}
+
+::v-deep(.p-datatable.p-datatable-users) {
+  .p-datatable-header {
+    margin-top: 0rem;
+    padding: 0.5rem !important;
+    text-align: center !important;
+    font-size: 1.5rem;
+  }
+
+  .p-paginator {
+    padding: 1rem;
+  }
+
+  .p-datatable-thead > tr > th {
+    text-align: center !important;
+  }
+
+  .p-datatable-tbody > tr > td {
+    cursor: auto;
+  }
+
+  .p-dropdown-label:not(.p-placeholder) {
+    text-transform: uppercase;
+  }
+}
+
+
+
+// Forms (inputs, selects and more) elements styling helpers
+.p-label {
+  font-size: 0.85rem;
+  font-style: italic;
+  padding: 0.25rem;
+  display: flex;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+
+.p-user-data-form {
+  height: 50% !important;
+  margin-bottom: 4.2rem;
+}
+
+.p-auth-button {
+  display: flex;
+  flex: 1 1 auto;
+  border: 1px solid black;
+}
+
+.p-password-button {
+  width: 50% !important;
+  margin-left: 0.5rem;
+}
+
+.p-password {
+  width: 100% !important;
+}
+
+.p-togglebutton.p-button {
+  border: 1px solid rgba(0, 0, 0, 0.38)
+}
+
+.p-togglebutton.p-button.p-highlight {
+  border-color: rgba(0, 0, 0, 0.38)
+}
+
+.p-togglebutton.p-button:hover.p-highlight {
+  border-color: rgba(0, 0, 0, 1)
+}
+.p-togglebutton.p-button:focus.p-highlight {
+  border-color: rgba(0, 0, 0, 1)
+}
+.p-togglebutton.p-button:not(.p-disabled):not(.p-highlight):hover {
+  border-color: rgba(0, 0, 0, 1)
+}
+

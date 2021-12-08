@@ -242,6 +242,17 @@ export default {
 .p-login-box {
   width: 40vw;
   min-height: 40vh;
+
+  @media only screen and (max-width: 576px) {
+    width: 90vw;
+  }
+   @media only screen and (min-width: 576px) and (max-width: 767px) {
+    width: 70vw;
+  }
+
+  @media only screen and (min-width: 767px) and (max-width: 1024px) {
+    width: 50vw;
+  }
 }
 
 .p-password {

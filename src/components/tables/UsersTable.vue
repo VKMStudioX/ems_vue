@@ -67,7 +67,18 @@
       "
     >
       <template #body="{ data }">
-        {{ data.email }}
+        <div
+          :class="
+            data.email && data.email.length >= 20
+              ? 'p-overflow'
+              : 'p-white-space-no-wrap'
+          "
+          v-tooltip.top="
+            data.email && data.email.length >= 20 ? data.email : ''
+          "
+        >
+          {{ data.email }}
+        </div>
       </template>
     </Column>
      <Column
@@ -85,7 +96,18 @@
       "
     >
       <template #body="{ data }">
-        {{ data.first_name }}
+        <div
+          :class="
+            data.first_name && data.first_name.length >= 20
+              ? 'p-overflow'
+              : 'p-white-space-no-wrap'
+          "
+          v-tooltip.top="
+            data.first_name && data.first_name.length >= 20 ? data.first_name : ''
+          "
+        >
+          {{ data.first_name }}
+        </div>
       </template>
     </Column>
      <Column
@@ -103,7 +125,18 @@
       "
     >
       <template #body="{ data }">
-        {{ data.last_name }}
+        <div
+          :class="
+            data.last_name && data.last_name.length >= 20
+              ? 'p-overflow'
+              : 'p-white-space-no-wrap'
+          "
+          v-tooltip.top="
+            data.last_name && data.last_name.length >= 20 ? data.last_name : ''
+          "
+        >
+          {{ data.last_name }}
+        </div>
       </template>
     </Column>
     <Column

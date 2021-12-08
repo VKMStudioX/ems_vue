@@ -67,7 +67,18 @@
       "
     >
       <template #body="{ data }">
-        {{ data.days_of_week }}
+        <div
+          :class="
+            data.days_of_week && data.days_of_week.length >= 20
+              ? 'p-overflow'
+              : 'p-white-space-no-wrap'
+          "
+          v-tooltip.top="
+            data.days_of_week && data.days_of_week.length >= 20 ? data.days_of_week : ''
+          "
+        >
+          {{ data.days_of_week }}
+        </div>
       </template>
     </Column>
      <Column
@@ -103,7 +114,18 @@
       "
     >
       <template #body="{ data }">
-        {{ data.title_of_reminder }}
+        <div
+          :class="
+            data.title_of_reminder && data.title_of_reminder.length >= 20
+              ? 'p-overflow'
+              : 'p-white-space-no-wrap'
+          "
+          v-tooltip.top="
+            data.title_of_reminder && data.title_of_reminder.length >= 20 ? data.title_of_reminder : ''
+          "
+        >
+          {{ data.title_of_reminder }}
+        </div>
       </template>
     </Column>
     <Column

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-user-data-form">
+  <div class="p-user-data-form p-m-4">
     <h4 class="p-text-center p-text-uppercase p-m-4">{{ isEdit ? 'Edit user Data' : 'Create new user' }}</h4>
 
     <div class="p-grid p-fluid p-jc-center">

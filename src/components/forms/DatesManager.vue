@@ -1,15 +1,15 @@
 <template>
-    <div class="p-user-data-form p-m-4">
+    <div :class="width > 576 ? 'p-m-4' : 'p-m-0'" class="p-user-data-form">
         <h4 class="p-text-center p-text-uppercase p-m-4">{{ isAbsences ? 'Manage absences' : 'Manage holidays' }}</h4>
-        <div class="p-grid p-fluid p-flex-jc-stretch">
-            <div class="p-col-6 p-md-8">
+        <div class="p-grid p-fluid p-flex-jc-stretch p-calendar">
+            <div class="p-xs-12 p-sm-8 p-md-8 ">
                 <Calendar
                     v-model="dates"
                     dateFormat="yy-mm-dd"
                     :inline="true"
                     :showButtonBar="false"
                     :manualInput="false"
-                    style="height:460px;"
+                    style="max-height:460px;"
                     :minDate="isAbsences ? new Date() : new Date(1970, 0, 1)"
                     :maxDate="isAbsences ? new Date(Date.now() + 12096e5) : null"
                     selectionMode="multiple"
@@ -18,14 +18,14 @@
                 </Calendar>
             </div>
 
-            <div class="p-col-6 p-md-4">
+            <div class="p-xs-12 p-sm-4 p-md-4">
                 <DataTable
                     :value="dates"
                     responsiveLayout="scroll"
                     class="p-datatable-sm"
                     :scrollable="true"
                     scrollHeight="flex"
-                    style="height: 460px; overflow-y: scroll;"
+                    style="max-height: 460px; overflow-y: scroll;"
                 >
                     <template #empty>No selections found</template>
                     <Column :header="isAbsences ? 'Actual Absences' : 'Holidays'">
@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="p-grid p-fluid p-jc-end">
-            <div class="p-col-6 p-md-4 p-flex p-flex-row">
+            <div class="p-xs-12 p-md-4 p-d-flex p-flex-row p-mr-3">
           <Button
             label="Clear"
             icon="pi pi-times"
@@ -160,4 +160,12 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.p-calendar {
+    flex-direction: row;
+
+    @media only screen and (max-width: 576px) {
+        flex-direction: column;
+    }
+}
+</style>

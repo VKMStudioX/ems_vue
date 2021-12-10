@@ -276,8 +276,8 @@ export default {
         required: requiredIf(() => !props.isEdit),
         minLength: minLength(10),
         maxLength: maxLength(10),
-        valid: validationRegExPass,
-        validFromAPI: validationFromAPI(errorMsg, "password"),
+        // valid: validationRegExPass,
+        // validFromAPI: validationFromAPI(errorMsg, "password"),
       },
     };
 

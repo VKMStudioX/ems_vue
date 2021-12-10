@@ -1,6 +1,7 @@
 import AdminService from "@/services/admin.service";
 import dayjs from "dayjs";
 import { remindersData, remindersDataBG, absencesData, absencesDataBG } from "./user.module";
+import { createDateAsUTC } from '@/functions/utils';
 
 const adminInitialState = {
   allUsersEvents: {
@@ -256,12 +257,12 @@ getAllReminders({ commit }) {
   mutations: {
     getAllUsersEventsSuccess(state, allUsersEvents) {
       allUsersEvents.data.user_absences.forEach((v) => {
-        v.start = dayjs(v.start).format('YYYY-MM-DD'),
+        v.start = dayjs(v.start).set('date', dayjs(v.start).get('date')+1).local().format('YYYY-MM-DD'),
         v.title = `${v.first_name} ${v.last_name} - ${v.type}`
       })
 
       allUsersEvents.data.user_absences_BG.forEach((v) => {
-        v.start = dayjs(v.start).format('YYYY-MM-DD')
+        v.start = dayjs(v.start).set('date', dayjs(v.start).get('date')+1).local().format('YYYY-MM-DD')
       })
 
       state.allUsersEvents.absences = allUsersEvents.data.user_absences
@@ -395,7 +396,7 @@ getAllReminders({ commit }) {
     },
 
     holidays: (state) => {
-      return state.holidays.length > 0 && state.holidays.map(date => dayjs(date.start).toDate());
+      return state.holidays.length > 0 && state.holidays.map(date => createDateAsUTC(dayjs(date.start).toDate()));
     },
 
     apiErrorMsg: (state) => {

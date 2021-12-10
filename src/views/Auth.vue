@@ -142,8 +142,8 @@ export default {
         required,
         minLength: minLength(10),
         maxLength: maxLength(10),
-        valid: validationRegExPass,
-        validApi: validationAuthEmc(errorMsg),
+        // valid: validationRegExPass,
+        // validApi: validationAuthEmc(errorMsg),
       },
     };
 

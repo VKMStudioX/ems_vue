@@ -19,6 +19,7 @@
 
 <script>
 import { useStore } from "vuex";
+import { useRouter } from 'vue-router'
 import { useToast } from "primevue/usetoast";
 import { ref, onMounted, computed } from "vue";
 import { createToast } from "@/functions/utils";
@@ -30,7 +31,8 @@ export default {
     setup() {
         const store = useStore();
         const toast = useToast();
-        const errorMsg = computed(() => store.getters["user/userApiErrorMsg"]);
+        const router = useRouter();
+        const errorMsg = computed(() => store.getters["admin/apiErrorMsg"]);
 
         const loading = ref(true);
         onMounted(async () => {

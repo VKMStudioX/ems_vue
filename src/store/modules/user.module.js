@@ -1,7 +1,5 @@
 import userService from "../../services/user.service";
 import dayjs from "dayjs";
-import utc from 'dayjs/plugin/utc'
-dayjs.extend(utc)
 
 const userInitialState = {
     userEvents: {
@@ -77,8 +75,7 @@ export const user = {
   mutations: {
     getUserEventsSuccess(state, userEvents) {
       userEvents.data.user_absences_BG.forEach((v) => {
-        v.start = dayjs(v.start).set('date', dayjs(v.start).get('date')+1).local().format('YYYY-MM-DD')
-        // v.start = dayjs(v.start).local().format('YYYY-MM-DD')
+        v.start = dayjs(v.start).set('date', dayjs(v.start).get('date')+1).format('YYYY-MM-DD')
       })
       state.userEvents.reminders = userEvents.data.user_reminders
       state.userEvents.absencesBG = userEvents.data.user_absences_BG
@@ -112,7 +109,7 @@ export const user = {
       return state.userEvents && state.userEvents;
     },
     userAbsences: (state) => {
-      return state.userAbsences.length > 0 && state.userAbsences.map(date => dayjs(date.start).toDate());
+      return state.userAbsences.length > 0 && state.userAbsences.map(date => (dayjs(date.start).toDate()));
     },
 }
 }

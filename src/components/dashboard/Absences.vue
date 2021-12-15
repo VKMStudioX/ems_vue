@@ -22,8 +22,9 @@ import { useStore } from "vuex";
 import { useRouter } from 'vue-router'
 import { useToast } from "primevue/usetoast";
 import { ref, onMounted, computed } from "vue";
-import { createToast } from "@/functions/utils";
+import { createToast, convertDateToUTC } from "@/functions/utils";
 import DatesManager from "@/components/forms/DatesManager.vue"
+import dayjs from "dayjs"
 
 export default {
     name: "Absences",
@@ -58,9 +59,10 @@ export default {
                 //FORMING THE VOID (REQUEST)
                 const userAbsencesData = {
                   user_id: userId.value,
-                  absences: userAbsences.value.dates,
-                  new_absences: userAbsences.value.newDates,
-                  removed_absences: userAbsences.value.removedDates
+                  absences: userAbsences.value.dates.map(date => dayjs(convertDateToUTC(date)).format(
+              "YYYY-MM-DD HH:mm:ss")),
+                  removed_absences: userAbsences.value.removedDates.map(date => dayjs(convertDateToUTC(date)).format(
+              "YYYY-MM-DD HH:mm:ss")),
                 }
 
                      store
@@ -93,7 +95,6 @@ export default {
 
     return {
         loading,
-        userAbsences,
         handleChangeDates,
         handleSubmit,
         handleInvalid,

@@ -22,8 +22,9 @@ import { useStore } from "vuex";
 import { useRouter } from 'vue-router'
 import { useToast } from "primevue/usetoast";
 import { ref, onMounted, computed } from "vue";
-import { createToast } from "@/functions/utils";
+import { createToast, convertDateToUTC } from "@/functions/utils";
 import DatesManager from "@/components/forms/DatesManager.vue";
+import dayjs from "dayjs"
 
 export default {
     name: "Holidays",
@@ -54,9 +55,10 @@ export default {
 
                 //FORMING THE VOID (REQUEST)
                 const holidaysData = {
-                  holidays: holidays.value.dates,
-                  new_holidays: holidays.value.newDates,
-                  removed_holidays: holidays.value.removedDates
+                  holidays: holidays.value.dates.map(date => dayjs(convertDateToUTC(date)).format(
+              "YYYY-MM-DD HH:mm:ss")),
+                  removed_holidays: holidays.value.removedDates.map(date => dayjs(convertDateToUTC(date)).format(
+              "YYYY-MM-DD HH:mm:ss")),
                 }
 
                      store

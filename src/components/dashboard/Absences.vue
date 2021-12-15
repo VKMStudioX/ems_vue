@@ -48,7 +48,6 @@ export default {
         const userAbsences = ref(null)
         const handleChangeDates = ($event) => {
             userAbsences.value = $event;
-            console.table(userAbsences.value)
         };
 
         const submitted = ref(false);

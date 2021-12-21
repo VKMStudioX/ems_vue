@@ -3,17 +3,22 @@ import Auth from "../views/Auth.vue";
 
 const Dashboard = () => import("../views/Dashboard.vue");
 const DashboardEvents = () => import("../components/dashboard/Events.vue");
-const DashboardAbsences = () => import("../components/dashboard/Absences.vue");
 
-const ManageReminders = () => import("../components/dashboard/admin/ManageReminders.vue");
-const ManageRemindersNew = () => import("../components/dashboard/admin/ManageRemindersNew.vue")
-const ManageRemindersEdit = () => import("../components/dashboard/admin/ManageRemindersEdit.vue")
+const UserAbsences = () => import("../components/dashboard/user/Absences.vue");
+
+const ManageReminders = () => import("../components/dashboard/admin/reminders/ManageReminders.vue");
+const ManageRemindersNew = () => import("../components/dashboard/admin/reminders/ManageRemindersNew.vue")
+const ManageRemindersEdit = () => import("../components/dashboard/admin/reminders/ManageRemindersEdit.vue")
 
 const ManageHolidays = () => import("../components/dashboard/admin/ManageHolidays.vue");
 
-const ManageUsers = () => import("../components/dashboard/admin/ManageUsers.vue");
-const ManageUserNew = () => import("../components/dashboard/admin/ManageUsersNew.vue")
-const ManageUserEdit = () => import("../components/dashboard/admin/ManageUsersEdit.vue")
+const ManageUsers = () => import("../components/dashboard/admin/users/ManageUsers.vue");
+const ManageUserNew = () => import("../components/dashboard/admin/users/ManageUsersNew.vue")
+const ManageUserEdit = () => import("../components/dashboard/admin/users/ManageUsersEdit.vue")
+
+const ManageProjects = () => import("../components/dashboard/admin/projects/ManageProjects.vue");
+const ManageProjectNew = () => import("../components/dashboard/admin/projects/ManageProjectsNew.vue")
+const ManageProjectEdit = () => import("../components/dashboard/admin/projects/ManageProjectsEdit.vue")
 
 const routes = [
   { path: "/:pathMatch(.*)*", component: Auth },
@@ -34,7 +39,7 @@ const routes = [
       },
       {
         path: "/dashboard/absences",
-        component: DashboardAbsences,
+        component: UserAbsences,
       },
       {
         path: "/dashboard/manage-reminders",
@@ -68,6 +73,21 @@ const routes = [
       {
         path: `/dashboard/edit-user`,
         component: ManageUserEdit,
+        props: (route) => ({ query: route.query.id }),
+      },
+
+      {
+        path: "/dashboard/manage-projects",
+        component: ManageProjects,
+      },
+      {
+        path: "/dashboard/new-project",
+        component: ManageProjectNew,
+        props: false,
+      },
+      {
+        path: `/dashboard/edit-project`,
+        component: ManageProjectEdit,
         props: (route) => ({ query: route.query.id }),
       },
     ]

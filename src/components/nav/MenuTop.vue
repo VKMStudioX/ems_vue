@@ -50,7 +50,6 @@
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
-
 export default {
   name: "MenuTop",
   setup() {
@@ -61,7 +60,6 @@ export default {
     const actualPath = computed(() => {
       return route.path;
     });
-
     const menuItems = ref([
       {
         index: 0,
@@ -110,11 +108,18 @@ export default {
             pathCheck: "/dashboard/manage-users",
             to: "/dashboard/manage-users",
             visible: true,
+          },
+          {
+            index: 3,
+            label: "Projects",
+            icon: "file-alt",
+            pathCheck: "/dashboard/edit-project",
+            to: "/dashboard/edit-project",      // manage-projects docelowo
+            visible: true,
           }
         ]
       },
     ]);
-
     const handleNavigation = (navIndex, type) => {
       router.push({
         path:
@@ -123,13 +128,10 @@ export default {
             : menuItems.value[navIndex].to,
       });
     };
-
     const menuAdmin = ref();
-
     const menuAdminToggle = (event) => {
       menuAdmin.value.toggle(event);
     };
-
     return {
       menuItems,
       actualPath,

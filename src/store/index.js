@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-// import { createLogger } from "vuex";
+import { createLogger } from "vuex";
 import { auth } from "./modules/auth.module";
 import { user } from "./modules/user.module";
 import { admin } from "./modules/admin.module";
@@ -10,7 +10,7 @@ const store = createStore({
     user,
     admin,
   },
-  // plugins: [createLogger()],
+  plugins: [createLogger()],
 });
 
 export default store;

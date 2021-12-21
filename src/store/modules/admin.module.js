@@ -20,6 +20,17 @@ const adminInitialState = {
   editUser: {},
   holidays: {},
   holidaysFromAPI: {},
+  allProjects: {
+    projects: [],
+    prjTechs: [], 
+    purposes: [],
+    types: [],
+    methodologies: [],
+    technologies: []
+  },
+  project: {
+
+  },
   apiErrorMsg: "",
 };
 
@@ -251,16 +262,37 @@ getAllReminders({ commit }) {
           });
       },
 
+      getAllProjects({ commit }) {
+        return AdminService.getAllProjects()
+          .then(
+            (allProjects) => {
+              commit("getAllProjectsSuccess", allProjects);
+              return Promise.resolve(allProjects);
+            },
+            (error) => {
+              commit("getAllProjectsFailure");
+              return Promise.reject(error);
+            }
+          )
+          .catch((error) => {
+            const errorMsg = error.response.data.message;
+            commit("updateApiErrorMsg", errorMsg);
+          });
+      },
+
   },
   mutations: {
     getAllUsersEventsSuccess(state, allUsersEvents) {
       allUsersEvents.data.user_absences.forEach((v) => {
-        v.start = dayjs(v.start).set('date', dayjs(v.start).get('date')+1).format('YYYY-MM-DD'),
-        v.title = `${v.first_name} ${v.last_name} - ${v.type}`
+        v.start = dayjs(v.start).format('YYYY-MM-DD'),
+        v.users.forEach(vu => v.title = `${vu.first_name} ${vu.last_name} - ${v.type}`)
       })
 
       allUsersEvents.data.user_absences_BG.forEach((v) => {
-        v.start = dayjs(v.start).set('date', dayjs(v.start).get('date')+1).format('YYYY-MM-DD')
+        v.start = dayjs(v.start).format('YYYY-MM-DD'),
+        v.backgroundColor = v.defaults.backgroundColor,
+        v.className = v.defaults.className,
+        v.display = v.defaults.display
       })
 
       state.allUsersEvents.absences = allUsersEvents.data.user_absences
@@ -273,7 +305,7 @@ getAllReminders({ commit }) {
     },
 
     getAllUsersSuccess(state, allUsers) {
-      state.allUsers = allUsers.data;
+      state.allUsers = allUsers.data.data;
     },
 
     getAllUsersFailure(state) {
@@ -293,7 +325,7 @@ getAllReminders({ commit }) {
     
 
     getUserById(state, id) {
-      const userArray = state.allUsers.users.filter(
+      const userArray = state.allUsers.filter(
         (v) => v.id === Number(id)
       );
       state.user = userArray[0];
@@ -339,6 +371,9 @@ getAllReminders({ commit }) {
       state.reminder = remindersArray[0];
     },
 
+
+    
+
     newReminderSuccess(state, newReminderDataFromAPI) {
         state.editReminder = newReminderDataFromAPI.data;
       },
@@ -371,6 +406,35 @@ getAllReminders({ commit }) {
     manageHolidaysFailure(state) {
       state.holidaysFromAPI = null;
     },
+
+    getAllProjectsSuccess(state, allProjects) {
+      allProjects.data.technologies.forEach((v) => {
+        v.data_key = `p${v.purpose_id}_t${v.type_id}_m${v.methodology_id}_${v.technology}`
+      })
+
+      state.allProjects = allProjects.data
+    },
+
+    getAllProjectsFailure(state) {
+      state.allProjects = null;
+    },
+
+    getProjectById(state, id) {
+      const prjInfo = state.allProjects.projects.filter(
+        (v) => v.id === Number(id)
+      );
+      const prjTechRaw = state.allProjects.prjTechs.filter(
+        (v) => v.project.id === Number(id)
+      );
+      const prjTech = prjTechRaw.map(v => v.technology);
+      prjTech.forEach((v) => {
+        v.data_key = `p${v.purpose_id}_t${v.type_id}_m${v.methodology_id}_${v.technology}`
+      })
+
+      state.project.info = prjInfo[0];
+      state.project.technologies = prjTech;
+    },
+
   },
   getters: {
     allUsersEvents: (state) => {
@@ -378,7 +442,7 @@ getAllReminders({ commit }) {
     },
 
     allUsers: (state) => {
-      return state.allUsers && state.allUsers.users;
+      return state.allUsers && state.allUsers;  // state.allUsers.users
     },
 
     userData: (state) => {
@@ -395,6 +459,34 @@ getAllReminders({ commit }) {
 
     holidays: (state) => {
       return state.holidays.length > 0 && state.holidays.map(date => (dayjs(date.start).toDate()));
+    },
+
+    purposes: (state) => {
+      return state.allProjects && state.allProjects.purposes
+    },
+
+    typesWeb: (state) => {
+      return state.allProjects && state.allProjects.types.filter(v => v.id !== 3)
+    },
+
+    typesMobile: (state) => {
+      return state.allProjects && state.allProjects.types.filter(v => v.id === 3)
+    },
+
+    methodologies: (state) => (id) => {
+      return state.allProjects && state.allProjects.methodologies.filter(v => v.type_id === id)
+    },
+
+    technologies: (state) => (id) => {
+      return state.allProjects && state.allProjects.technologies.filter(v => v.methodology_id === id)
+    },
+
+    prjInfo: (state) => {
+      return state.project && state.project.info
+    },
+
+    prjTechnologies: (state) => {
+      return state.project && state.project.technologies
     },
 
     apiErrorMsg: (state) => {

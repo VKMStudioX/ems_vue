@@ -87,6 +87,12 @@ class AdminService {
     );
 }
 
+getAllProjects() {
+  return axios.get(`${process.env.VUE_APP_ADMIN_API}/get_all_projects`, {
+    headers: authHeader(),
+  });
+}
+
 }
 
 export default new AdminService();

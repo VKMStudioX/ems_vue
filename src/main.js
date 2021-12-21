@@ -46,7 +46,7 @@ import "vue-json-pretty/lib/styles.css";
 
 // FontAwesome
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faSquare, faCheckSquare, faTimesCircle } from "@fortawesome/free-regular-svg-icons";
+import { faSquare, faCheckSquare, faTimesCircle, faGem } from "@fortawesome/free-regular-svg-icons";
 import {
   faCalendarWeek,
   faCalendarDay,
@@ -79,7 +79,15 @@ import {
   faHouseUser,
   faCog,
   faHeading,
+  faFileAlt,
+  faMobileAlt,
+  faDesktop,
+  faDatabase,
+  faPhotoVideo,
+  faProjectDiagram
+
 } from "@fortawesome/free-solid-svg-icons";
+import { faReact, faVuejs, faLaravel, faJava, faPython, faApple, faAndroid } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 library.add(
@@ -116,6 +124,14 @@ library.add(
   faTimesCircleSolid,
   faHouseUser,
   faCog,
+  faFileAlt,
+  faMobileAlt,
+  faDesktop,
+  faDatabase,
+  faPhotoVideo,
+  faProjectDiagram, 
+  faGem,
+  faReact, faVuejs, faLaravel, faJava, faPython, faApple, faAndroid
 );
 
 createApp(App)

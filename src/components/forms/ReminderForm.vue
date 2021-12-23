@@ -324,36 +324,4 @@ export default {
 </script>
 
 <style lang="scss">
-.p-multiselect-label:not(.p-placeholder) {
-  padding-top: 0.5rem !important;
-  padding-bottom: 0.5rem !important;
-}
-
-.p-dropdown-label:not(.p-placeholder) {
-  padding-top: 0.5rem !important;
-  padding-bottom: 0.5rem !important;
-}
-
-.selected-option {
-  display: inline-flex;
-  flex: 1;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 0rem 1rem;
-}
-.selected-option-value {
-  padding: 0.5rem 0.5rem;
-  border-radius: 3px;
-  display: inline-flex;
-  margin-right: 0.5rem;
-  background-color: var(--primary-color);
-  color: var(--primary-color-text);
-}
-
-@media screen and (max-width: 640px) {
-  .p-multiselect {
-    width: 100%;
-  }
-}
 </style>

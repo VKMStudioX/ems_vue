@@ -1,50 +1,51 @@
 <template>
   <DataTable
-    :value="users"
+    :value="projects"
     :paginator="true"
     class="p-datatable-users p-users-table"
     :class="1400 > windowWidth ? 'p-datatable-sm' : ''"
     :rows="12"
     dataKey="id"
     :rowHover="true"
-    v-model:selection="selectedUsers"
+    v-model:selection="selectedProjects"
     v-model:filters="filters"
     filterDisplay="menu"
     :loading="loading"
     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    :globalFilterFields="['id', 'email', 'is_admin']"
+    :globalFilterFields="['id', 'project_name', 'is_admin']"
     :scrollable="true"
     scrollHeight="flex"
   >
     <template #header>
       <div class="p-d-flex p-jc-between p-ai-center">
-        <div><h3 class="p-m-0">EMS Users list</h3></div>
+        <div><h3 class="p-m-0">EMS Projects list</h3></div>
           <div>
             <Button
-            label="Add new user"
+            v-if="!isView"
+            label="Add new project"
             icon="pi pi-user-plus"
             iconPos="left"
             class="p-button-info"
             :class="1400 > windowWidth ? 'p-button-sm' : ''"
             type="button"
-            @click="handleAddNewUser()"
+            @click="handleAddNewProject()"
           />
           </div>
       </div>
     </template>
-    <template #empty> No users found. </template>
-    <template #loading> Loading users data. Please wait. </template>
+    <template #empty> No projects found. </template>
+    <template #loading> Loading projects data. Please wait. </template>
     <Column
       field="id"
       header="ID"
       headerClass="p-column-header"
       sortable
       style="
-        max-width: 10%;
-        max-width: 10%;
+        max-width: 5%;
+        max-width: 5%;
         display: flex;
-        flex: 1 1 10%;
+        flex: 1 1 5%;
         justify-content: flex-start;
       "
     >
@@ -53,8 +54,8 @@
       </template>
     </Column>
     <Column
-      field="email"
-      header="E-mail"
+      field="project_name"
+      header="Project Name"
       headerClass="p-column-header"
       sortable
       :filterMenuStyle="{ width: '5rem' }"
@@ -69,21 +70,21 @@
       <template #body="{ data }">
         <div
           :class="
-            data.email && data.email.length >= 20
+            data.project_name && data.project_name.length >= 20
               ? 'p-overflow'
               : 'p-white-space-no-wrap'
           "
           v-tooltip.top="
-            data.email && data.email.length >= 20 ? data.email : ''
+            data.project_name && data.project_name.length >= 20 ? data.project_name : ''
           "
         >
-          {{ data.email }}
+          {{ data.project_name }}
         </div>
       </template>
     </Column>
      <Column
-      field="first_name"
-      header="First Name"
+      field="client_name"
+      header="Client Name"
       headerClass="p-column-header"
       sortable
       :filterMenuStyle="{ width: '5rem' }"
@@ -98,21 +99,21 @@
       <template #body="{ data }">
         <div
           :class="
-            data.first_name && data.first_name.length >= 20
+            data.client_name && data.client_name.length >= 20
               ? 'p-overflow'
               : 'p-white-space-no-wrap'
           "
           v-tooltip.top="
-            data.first_name && data.first_name.length >= 20 ? data.first_name : ''
+            data.client_name && data.client_name.length >= 20 ? data.client_name : ''
           "
         >
-          {{ data.first_name }}
+          {{ data.client_name }}
         </div>
       </template>
     </Column>
      <Column
-      field="last_name"
-      header="Last Name"
+      field="project_start"
+      header="Start Date"
       headerClass="p-column-header"
       sortable
       :filterMenuStyle="{ width: '5rem' }"
@@ -127,43 +128,44 @@
       <template #body="{ data }">
         <div
           :class="
-            data.last_name && data.last_name.length >= 20
+            data.project_start && data.project_start.length >= 20
               ? 'p-overflow'
               : 'p-white-space-no-wrap'
           "
           v-tooltip.top="
-            data.last_name && data.last_name.length >= 20 ? data.last_name : ''
+            data.project_start && data.project_start.length >= 20 ? data.project_start : ''
           "
         >
-          {{ data.last_name }}
+          {{ dayjs(data.project_start).format("YYYY-MM-DD") }}
         </div>
       </template>
     </Column>
     <Column
-      field="is_admin"
+      field="project_end"
+      header="End Date"
+      headerClass="p-column-header"
       sortable
-      headerClass="p-column-header p-default-cursor"
-      :showFilterMatchModes="false"
+      :filterMenuStyle="{ width: '5rem' }"
       style="
-        max-width: 15%;
+        min-width: 20%;
+        max-width: 20%;
         display: flex;
-        flex: 1 1 15%;
-        justify-content: center;
+        flex: 1 1 20%;
+        justify-content: flex-start;
       "
     >
-      <template #header>
-        {{ 1400 > windowWidth ? "is Admin ?" : "is Admin ?" }}
-      </template>
       <template #body="{ data }">
         <div
-          class="p-d-flex p-jc-center p-ai-center"
-          v-tooltip.top="data.is_admin ? 'User is admin' : 'User is not admin'"
+          :class="
+            data.project_end && data.project_end.length >= 20
+              ? 'p-overflow'
+              : 'p-white-space-no-wrap'
+          "
+          v-tooltip.top="
+            data.project_end && data.project_end.length >= 20 ? data.project_end : ''
+          "
         >
-          <font-awesome-icon
-            :icon="['far', 'check-square']"
-            v-if="data.is_admin"
-          />
-          <font-awesome-icon :icon="['far', 'square']" v-if="!data.is_admin" />
+          {{ dayjs(data.project_end).format("YYYY-MM-DD") }}
         </div>
       </template>
     </Column>
@@ -183,19 +185,28 @@
         <div class="p-table-center-flex">Actions</div>
       </template>
       <template #body="{ data }">
-        <div class="p-d-flex p-jc-between">
-          <div v-tooltip.top="'Delete user'" class="p-mr-4">
+        <div class="p-d-flex p-jc-between" v-if="isView">
+          <div v-tooltip.top="'View project'" class="p-mr-4">
+            <font-awesome-icon
+              :icon="['fas', 'file-alt']"
+              class="p-cursor-pointer p-color-action"
+              @click="handleViewProject(data.id)"
+            />
+          </div>
+        </div>
+        <div class="p-d-flex p-jc-between" v-else>
+          <div v-tooltip.top="'Delete project'" class="p-mr-4">
             <font-awesome-icon
               :icon="['fas', 'user-minus']"
               class="p-cursor-pointer p-color-remove"
-              @click="handleDeleteUser(data.id)"
+              @click="handleDeleteProject(data.id)"
             />
           </div>
-          <div v-tooltip.top="'Edit user'">
+          <div v-tooltip.top="'Edit project'">
             <font-awesome-icon
               :icon="['fas', 'user-edit']"
               class="p-cursor-pointer p-color-edit"
-              @click="handleEditUser(data.id)"
+              @click="handleEditProject(data.id)"
             />
           </div>
         </div>
@@ -208,11 +219,12 @@
 import { useWindowSize } from "vue-window-size";
 import { FilterMatchMode } from "primevue/api";
 import { ref } from "vue";
+import dayjs from "dayjs";
 
 export default {
-  name: "UsersTable",
+  name: "ProjectsTable",
   props: {
-    users: {
+    projects: {
       type: Array,
       required: true,
     },
@@ -221,37 +233,48 @@ export default {
       required: true,
       default: true,
     },
+    isView: {
+      type: Boolean,
+      required: false,
+      default: false,
+    }
   },
   setup(props, { emit }) {
     const { width, height } = useWindowSize();
-    const selectedUsers = ref();
+    const selectedProjects = ref();
     const filters = ref({
       global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     });
 
-    const handleEditUser = (id) => {
-      emit("editUser", id);
+    const handleEditProject = (id) => {
+      emit("editProject", id);
     };
 
-    const handleAddNewUser = () => {
-      emit("newUser");
+    const handleAddNewProject = () => {
+      emit("newProject");
     }
 
-    const handleDeleteUser = (id) => {
-      emit("deleteUser", id);
+    const handleDeleteProject = (id) => {
+      emit("deleteProject", id);
+    };
+
+    const handleViewProject = (id) => {
+      emit("viewProject", id);
     };
 
     return {
       filters,
-      selectedUsers,
-      handleEditUser,
-      handleAddNewUser,
-      handleDeleteUser,
+      selectedProjects,
+      handleEditProject,
+      handleAddNewProject,
+      handleDeleteProject,
+      handleViewProject,
       windowWidth: width,
       windowHeight: height,
+      dayjs
     };
   },
-  emits: ["deleteUser", "editUser", "newUser"],
+  emits: ["deleteProject", "editProject", "newProject", "viewProject"],
 };
 </script>
 

@@ -19,7 +19,7 @@
       </Button>
     </div>
 
-    <!-- KPI's menu -->
+    <!-- Admin's menu -->
     <OverlayPanel
       ref="menuAdmin"
       appendTo="body"
@@ -75,7 +75,7 @@ export default {
         icon: "times-circle",
         pathCheck: "dashboard/absences",
         to: "/dashboard/absences",
-        visible: userIsAdmin.value === false,
+        visible: false,
       },
       {
         index: 2,
@@ -83,7 +83,7 @@ export default {
         icon: "cog",
         pathCheck: "manage",
         to: "/dashboard/manage-reminders",
-        visible: userIsAdmin.value === true,
+        visible: true,
         children: [
           {
             index: 0,
@@ -91,7 +91,7 @@ export default {
             icon: "envelope",
             pathCheck: "reminders",
             to: "/dashboard/manage-reminders",
-            visible: true,
+            visible: userIsAdmin.value === true,
           },
           {
             index: 1,
@@ -99,7 +99,7 @@ export default {
             icon: "calendar-times",
             pathCheck: "/dashboard/manage-holidays",
             to: "/dashboard/manage-holidays",
-            visible: true,
+            visible: userIsAdmin.value === true,
           },
           {
             index: 2,
@@ -107,16 +107,32 @@ export default {
             icon: "user",
             pathCheck: "/dashboard/manage-users",
             to: "/dashboard/manage-users",
-            visible: true,
+            visible: userIsAdmin.value === true,
           },
           {
             index: 3,
             label: "Projects",
             icon: "file-alt",
-            pathCheck: "/dashboard/edit-project",
-            to: "/dashboard/edit-project",      // manage-projects docelowo
-            visible: true,
-          }
+            pathCheck: "/dashboard/manage-projects",
+            to: "/dashboard/manage-projects",
+            visible: userIsAdmin.value === true,
+          }, 
+          {
+            index: 4,
+            label: "Absences",
+            icon: "times-circle",
+            pathCheck: "dashboard/absences",
+            to: "/dashboard/absences",
+            visible: userIsAdmin.value === false,
+          },  
+          {
+            index: 5,
+            label: "Projects",
+            icon: "file-alt",
+            pathCheck: "/dashboard/view-projects",
+            to: "/dashboard/view-projects",
+            visible: userIsAdmin.value === false,
+          },  
         ]
       },
     ]);

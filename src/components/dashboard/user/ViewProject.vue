@@ -8,18 +8,9 @@
       @submit.prevent="handleSubmit(!validate.$invalid)"
       @invalid.capture.prevent="handleInvalid()"
     >
-    <ProjectInfoManager 
-        @changedVS="handleChangeV$($event)"
-        @changedState="handleChangeState($event)"
+    <ProjectInfoTechView 
         :submitted="submitted"
-        :isEdit="true"
     />
-      <ProjectTechManager
-        :submitted="submitted"
-        :isEdit="true"
-        @selectedTechnologies="handleChangeSelectedTechs($event)"
-        @removeTechnologies="handleChangeRemovedTechs($event)"
-      />
     </form>
     </div>
   </div>
@@ -31,13 +22,12 @@ import { useStore } from "vuex";
 import { useToast } from "primevue/usetoast";
 import { useRouter, useRoute } from "vue-router";
 import { createToast, convertDateToUTC } from "@/functions/utils";
-import ProjectInfoManager from "@/components/forms/ProjectInfoManager";
-import ProjectTechManager from "@/components/forms/ProjectTechManager";
+import ProjectInfoTechView from "@/components/forms/ProjectInfoTechView";
 import dayjs from "dayjs";
 
 export default {
   name: "ManageProjectsEdit",
-  components: { ProjectInfoManager, ProjectTechManager },
+  components: { ProjectInfoTechView,  },
   setup() {
     const toast = useToast();
     const store = useStore();

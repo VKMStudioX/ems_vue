@@ -1,7 +1,7 @@
 <template>
 <div class="p-m-4">
   <div class="p-mt-2 p-mb-2">
-    <h4 class="p-text-center p-text-uppercase p-m-2">Edit project technologies</h4>
+    <h4 class="p-text-center p-text-uppercase p-m-2">Project technologies</h4>
     
     <div class="p-grid p-fluid">
       <div class="p-col-12 p-md-4">
@@ -226,27 +226,7 @@ export default {
     const blockUI = ref(true);
     const loadingTechList = ref(false);
 
-    // const rdmUserSelectedTechnologies = computed(
-    //   () => store.getters["rdm/rdmUserSelectedTechnologies"]
-    // );
-    // const rdmUserSelectedTechnologiesWithDataKey = ref([]);
     const rdmSelectedOnMounted = ref(false);
-
-    // Executing the data_key property on UserSelectedTechnologies (data from DB / endpoint) at start of the component
-    // onMounted(() => {
-    //   rdmSelectedOnMounted.value = true;
-    //   rdmSelectedOwnersAndTechnologies();
-    // });
-
-    // WATCHERS
-    // Requesting a new ship list from selected owner
-    // watch(selectedMethodologies, (value, prevValue) => {
-    //   if (value !== prevValue) {
-    //     loadingTechList.value = true;
-    //     handleTechnologiesChange();
-    //   }
-    // });
-
 
     watch(selectedPurposes, (value, prevValue) => {
       if (value !== prevValue) {
@@ -284,11 +264,16 @@ export default {
 
 
     // Emitting the changes of selected and removed technologies to main component
+     onMounted(() => {
+        emit("selectedTechnologies", selectedTechnologies.value);
+    });
+
     watch(selectedTechnologies, (value, prevValue) => {
       if (value !== prevValue) {
         emit("selectedTechnologies", selectedTechnologies.value);
       }
     });
+    
     watch(removeTechnologies, (value, prevValue) => {
       if (value !== prevValue) {
         emit("removeTechnologies", removeTechnologies.value);
@@ -376,14 +361,6 @@ export default {
         (selShip) => selShip.data_key !== data.data_key
       );
 
-      // rdmUserSelectedTechnologiesWithDataKey.value.forEach((rdmShip) => {
-      //   if (rdmShip.data_key === data.data_key) {
-      //     removeTechnologies.value
-      //       ? (removeTechnologies.value = [...removeTechnologies.value, data])
-      //       : (removeTechnologies.value = [data]);
-      //     removeDuplicatesFromArray(removeTechnologies);
-      //   }
-      // });
     };
 
     const handleRemoveAllTechnologies = () => {

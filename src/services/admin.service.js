@@ -63,7 +63,7 @@ class AdminService {
 
   deleteReminder(id) {
     return axios.put(
-      `${process.env.VUE_APPVUE_APP_ADMIN_API_API}/delete_reminder?id=${id}`,
+      `${process.env.VUE_APP_ADMIN_API}/delete_reminder?id=${id}`,
       {},
       {
         headers: authHeader(),
@@ -92,6 +92,33 @@ getAllProjects() {
     headers: authHeader(),
   });
 }
+
+newProject(newProjectData) {
+  return axios.post(
+    `${process.env.VUE_APP_ADMIN_API}/new_project`,
+    { ...newProjectData },
+    { headers: authHeader() }
+  );
+}
+
+updateProject(editProjectData) {
+  return axios.put(
+    `${process.env.VUE_APP_ADMIN_API}/update_project`,
+    { ...editProjectData },
+    { headers: authHeader() }
+  );
+}
+
+deleteProject(id) {
+  return axios.put(
+    `${process.env.VUE_APP_ADMIN_API}/delete_project?id=${id}`,
+    {},
+    {
+      headers: authHeader(),
+    }
+  );
+}
+
 
 }
 

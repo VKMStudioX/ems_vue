@@ -21,7 +21,9 @@ const adminInitialState = {
   holidays: {},
   holidaysFromAPI: {},
   allProjects: {
+    availableUsers: [],
     projects: [],
+    projectUsers: [],
     prjTechs: [], 
     purposes: [],
     types: [],
@@ -29,7 +31,9 @@ const adminInitialState = {
     technologies: []
   },
   project: {
-
+    info: {},
+    technologies: [],
+    users: [],
   },
   apiErrorMsg: "",
 };
@@ -176,17 +180,7 @@ getAllReminders({ commit }) {
             }
           )
           .catch((error) => {
-            let errorMsg = error.response.data.message;
-            if (error.response.data.errors.email) {
-              error.response.data.errors.email.forEach(
-                (err) => (errorMsg = errorMsg.concat(" - ", err))
-              );
-            }
-            if (error.response.data.errors.password) {
-              error.response.data.errors.password.forEach(
-                (err) => (errorMsg = errorMsg.concat(" - ", err))
-              );
-            }
+            const errorMsg = error.response.data.message;
             commit("updateApiErrorMsg", errorMsg);
           });
       },
@@ -280,6 +274,63 @@ getAllReminders({ commit }) {
           });
       },
 
+      getNewProject({ commit }) {
+        return commit("getNewProjectSuccess");
+      },
+  
+      newProject({ commit }, newProjectData) {
+          return AdminService.newProject(newProjectData)
+            .then(
+              (newProjectDataFromAPI) => {
+                commit("newProjectSuccess", newProjectDataFromAPI);
+                return Promise.resolve(newProjectDataFromAPI);
+              },
+              (error) => {
+                commit("newProjectFailure");
+                return Promise.reject(error);
+              }
+            )
+            .catch((error) => {
+              const errorMsg = error.response.data.message;
+              commit("updateApiErrorMsg", errorMsg);
+            });
+        },
+    
+        updateProject({ commit }, editProjectData) {
+          return AdminService.updateProject(editProjectData)
+            .then(
+              (editProjectDataFromAPI) => {
+                commit("updateProjectSuccess", editProjectDataFromAPI);
+                return Promise.resolve(editProjectDataFromAPI);
+              },
+              (error) => {
+                commit("updateProjectFailure");
+                return Promise.reject(error);
+              }
+            )
+            .catch((error) => {
+              const errorMsg = error.response.data.message;
+              commit("updateApiErrorMsg", errorMsg);
+            });
+        },
+    
+        deleteProject({ commit }, id) {
+          return AdminService.deleteProject(id)
+            .then(
+              (deletedProject) => {
+                return Promise.resolve(deletedProject);
+              },
+              (error) => {
+                return Promise.reject(error);
+              }
+            )
+            .catch((error) => {
+              const errorMsg = error.response.data.message;
+              commit("updateApiErrorMsg", errorMsg);
+            });
+        },
+
+
   },
   mutations: {
     getAllUsersEventsSuccess(state, allUsersEvents) {
@@ -371,9 +422,6 @@ getAllReminders({ commit }) {
       state.reminder = remindersArray[0];
     },
 
-
-    
-
     newReminderSuccess(state, newReminderDataFromAPI) {
         state.editReminder = newReminderDataFromAPI.data;
       },
@@ -430,9 +478,35 @@ getAllReminders({ commit }) {
       prjTech.forEach((v) => {
         v.data_key = `p${v.purpose_id}_t${v.type_id}_m${v.methodology_id}_${v.technology}`
       })
+      
+      const prjUsers = [];
+       state.allProjects.projectUsers.forEach(pU => pU.project_id === Number(id) ? prjUsers.push(pU.user) : null)
 
+      state.project.users = prjUsers;
       state.project.info = prjInfo[0];
       state.project.technologies = prjTech;
+    },
+
+    getNewProjectSuccess(state) {
+      state.project = {
+        info: {},
+        technologies: [],
+        users: []
+      };
+    },
+
+    newProjectSuccess(state, newProjectDataFromAPI) {
+      state.editProject = newProjectDataFromAPI.data;
+    },
+    newProjectFailure(state) {
+      state.editProject = null;
+    },
+
+    updateProjectSuccess(state, updateProjectDataFromAPI) {
+      state.editProject = updateProjectDataFromAPI.data;
+    },
+    updateProjectFailure(state) {
+      state.editProject = null;
     },
 
   },
@@ -479,6 +553,18 @@ getAllReminders({ commit }) {
 
     technologies: (state) => (id) => {
       return state.allProjects && state.allProjects.technologies.filter(v => v.methodology_id === id)
+    },
+
+    allProjects: (state) => {
+      return state.allProjects && state.allProjects.projects
+    },
+
+    prjAvailUsers: (state) => {
+      return state.allProjects && state.allProjects.availableUsers
+    },
+
+    prjUsers: (state) => {
+      return state.project && state.project.users
     },
 
     prjInfo: (state) => {

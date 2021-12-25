@@ -119,6 +119,14 @@ deleteProject(id) {
   );
 }
 
+participateInProject(participateInProjectData) {
+  return axios.put(
+    `${process.env.VUE_APP_ADMIN_API}/participate_in_project`,
+    { ...participateInProjectData },
+    { headers: authHeader() }
+  );
+}
+
 
 }
 

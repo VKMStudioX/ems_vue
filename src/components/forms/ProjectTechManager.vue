@@ -138,6 +138,7 @@
                 class="p-selected-technologies-body"
                 v-tooltip.left="
                    `Type: ${data.type_id === 1 ? 'Front-End' : data.type_id === 2 ? 'Back-End' : 'Mobile'}, 
+                   Methodology: ${getMethodologyNameById(data.methodology_id)},
                    Technology: ${data.technology},
                    Language: ${data.language}`
                 "
@@ -191,7 +192,7 @@
 import { useStore } from "vuex";
 import { useToast } from "primevue/usetoast";
 import { computed, onMounted, ref, watch } from "vue";
-import { createToast } from "../../functions/utils";
+import { createToast, getIconByName, getMethodologyNameById } from "@/functions/utils";
 import { useWindowSize } from "vue-window-size";
 
 export default {
@@ -378,36 +379,7 @@ export default {
       selectedTechnologies.value ? (selectedTechnologies.value = []) : null;
     };
 
-    const getIconByName = (name) => {
-      let icon = ["", ""];
 
-      if (name.includes('React') || name.includes('Next') || name.includes('Gatsby')) {
-        icon = ["fab", "react"];
-      }
-      if (name.includes('Vue') || name.includes('Nuxt')) {
-        icon = ["fab", "vuejs"];
-      }
-      if (name.includes('Laravel')) {
-        icon = ["fab", "laravel"];
-      }
-      if (name.includes('Spring')) {
-        icon = ["fab", "java"];
-      }
-      if (name.includes('Ruby')) {
-        icon = ["far", "gem"];
-      }
-      if (name.includes('Django')) {
-        icon = ["fab", "python"];
-      }
-      if (name.includes('iOS')) {
-        icon = ["fab", "apple"];
-      }
-      if (name.includes('Android')) {
-        icon = ["fab", "android"];
-      }
-
-      return icon;
-    } 
 
     return {
       purposes, purposesData,
@@ -430,6 +402,7 @@ export default {
       removeTechnologies,
 
       getIconByName,
+      getMethodologyNameById,
       handleSingleSelection,
       handleSingleRemove,
       handleRemoveAllTechnologies,
@@ -453,34 +426,34 @@ export default {
   align-items: center;
   justify-content: space-evenly;
   width: 100%;
+  flex-direction: row;
+
+  @media screen and (max-width: 767px) {
+  flex-direction: column;
+  }
 }
 
 .p-technologies {
   width: 67.8%;
   height: 100%;
-  height: calc(35vw - 250px);
+  height: 25vh;
   overflow-x: hidden !important;
   background-color: var(--surface-a);
 
-  @media screen and (max-width: 1700px) {
-    height: calc(34vw - 225px);
-  }
-  @media screen and (max-width: 1600px) {
-    height: calc(33vw - 200px);
-  }
-  @media screen and (max-width: 1500px) {
-    height: calc(30vw - 175px);
-  }
-  @media screen and (max-width: 1400px) {
-    height: calc(27vw - 150px);
-  }
-  @media screen and (max-width: 1300px) {
-    height: calc(25vw - 150px);
+  @media screen and (max-width: 767px) {
+    width: 100%;
+    display:block;
   }
 }
 
 .p-selected-technologies {
   width: 32.2% !important;
+
+   @media screen and (max-width: 767px) {
+    width: 100% !important;
+    display:block !important;
+  }
+  
 }
 
 .p-selected-technologies-body {

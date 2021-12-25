@@ -75,7 +75,10 @@ export const user = {
   mutations: {
     getUserEventsSuccess(state, userEvents) {
       userEvents.data.user_absences_BG.forEach((v) => {
-        v.start = dayjs(v.start).set('date', dayjs(v.start).get('date')+1).format('YYYY-MM-DD')
+        v.start = dayjs(v.start).format('YYYY-MM-DD')
+        v.backgroundColor = v.defaults.backgroundColor,
+        v.className = v.defaults.className,
+        v.display = v.defaults.display
       })
       state.userEvents.reminders = userEvents.data.user_reminders
       state.userEvents.absencesBG = userEvents.data.user_absences_BG

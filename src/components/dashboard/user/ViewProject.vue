@@ -5,7 +5,7 @@
         </div>
         <div v-else>
     <form
-      @submit.prevent="handleSubmit(!validate.$invalid)"
+      @submit.prevent="handleSubmit()"
       @invalid.capture.prevent="handleInvalid()"
     >
     <ProjectInfoTechView 
@@ -17,13 +17,12 @@
 </template>
 
 <script>
-import { ref, reactive, computed, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useToast } from "primevue/usetoast";
 import { useRouter, useRoute } from "vue-router";
-import { createToast, convertDateToUTC } from "@/functions/utils";
+import { createToast } from "@/functions/utils";
 import ProjectInfoTechView from "@/components/forms/ProjectInfoTechView";
-import dayjs from "dayjs";
 
 export default {
   name: "ManageProjectsEdit",
@@ -48,49 +47,25 @@ export default {
 
     const errorMsg = computed(() => store.getters["admin/apiErrorMsg"]);
 
-    // reminderDATA & FORM VALIDATION
-    const projectState = reactive({});
-    const handleChangeState = ($event) => {
-      projectState.target = $event;
-    };
-
-    const projectTechs = ref([]);
-    const handleChangeSelectedTechs = ($event) => {
-      projectTechs.value = $event;
-    };
-
-    const validate = ref({});
-    const handleChangeV$ = ($event) => {
-      validate.value = $event;
-    };
+    const userId = computed(() => store.getters["auth/userId"]);
 
     const submitted = ref(false);
 
     const handleSubmit = (isFormValid) => {
       submitted.value = true;
 
-      if (isFormValid) {
+      
         //FORMING THE VOID (REQUEST)
 
-        const editProjectData =  {
-          id: id && Number(id),
-          project_info: {
-            project_name: projectState && projectState.target.projectName,
-            client_name: projectState && projectState.target.clientName,
-            project_info: projectState && projectState.target.projectInfo,
-            project_start: projectState && dayjs(convertDateToUTC(projectState.target.startDate)).format(
-              "YYYY-MM-DD HH:mm:ss"),
-            project_end: projectState && dayjs(convertDateToUTC(projectState.target.endDate)).format(
-              "YYYY-MM-DD HH:mm:ss"),
-          },
-          project_users: projectState && projectState.target.projectUsers,
-          project_technologies: projectTechs && projectTechs.value,
+        const participateInProjectData =  {
+          project_id: id && Number(id),
+          user_id: userId.value,
         }
 
-        console.log(editProjectData)
-          editProjectData
+        console.log(participateInProjectData)
+          participateInProjectData
           ? store
-              .dispatch("admin/updateProject", editProjectData)
+              .dispatch("admin/participateInProject", participateInProjectData)
               .then(
                 (res) => {
                   createToast(
@@ -101,7 +76,7 @@ export default {
                     5000
                   );
                   router.push({
-                    path: "/dashboard/manage-projects",
+                    path: "/dashboard/view-projects",
                   });
                 },
                 (error) => {
@@ -115,18 +90,9 @@ export default {
               toast,
               "warn",
               "Warning!",
-              "Nothing was changed, project not edited",
+              "Something went wrong, not participated in project",
               5000
             );
-      } else {
-        createToast(
-          toast,
-          "error",
-          "Error!",
-          "Bad reminder data, read the hints below inputs",
-          5000
-        );
-      }
 
     };
 
@@ -136,16 +102,11 @@ export default {
 
     return {
       loading, id,
-      handleChangeState,
-
-      validate,
-      handleChangeV$,
 
       submitted,
       handleSubmit,
 
       handleInvalid,
-      handleChangeSelectedTechs
     };
   },
 };

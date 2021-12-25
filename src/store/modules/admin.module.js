@@ -330,6 +330,22 @@ getAllReminders({ commit }) {
             });
         },
 
+        participateInProject({ commit }, participateInProjectData) {
+          return AdminService.participateInProject(participateInProjectData)
+            .then(
+              (participatedProject) => {
+                return Promise.resolve(participatedProject);
+              },
+              (error) => {
+                return Promise.reject(error);
+              }
+            )
+            .catch((error) => {
+              const errorMsg = error.response.data.message;
+              commit("updateApiErrorMsg", errorMsg);
+            });
+        },
+
 
   },
   mutations: {

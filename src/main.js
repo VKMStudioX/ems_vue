@@ -33,6 +33,7 @@ import ConfirmationService from "primevue/confirmationservice";
 import ConfirmPopup from "primevue/confirmpopup";
 import OverlayPanel from "primevue/overlaypanel";
 import Textarea from 'primevue/textarea';
+import Card from 'primevue/card';
 
 import Loader from "@/components/commons/Loader";
 
@@ -166,6 +167,7 @@ createApp(App)
   .component("ConfirmPopup", ConfirmPopup)
   .component("OverlayPanel", OverlayPanel)
   .component("Textarea", Textarea)
+  .component("Card", Card)
   .component("Loader", Loader)
   .component("font-awesome-icon", FontAwesomeIcon)
   .mount("#app");

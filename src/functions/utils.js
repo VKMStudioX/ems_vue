@@ -144,3 +144,62 @@ export const convertDateToUTC = (date) => {
       date.getUTCSeconds()
   );
 };
+
+
+export const getIconByName = (name) => {
+  let icon = ["", ""];
+
+  if (name.includes('React') || name.includes('Next') || name.includes('Gatsby')) {
+    icon = ["fab", "react"];
+  }
+  if (name.includes('Vue') || name.includes('Nuxt')) {
+    icon = ["fab", "vuejs"];
+  }
+  if (name.includes('Laravel')) {
+    icon = ["fab", "laravel"];
+  }
+  if (name.includes('Spring')) {
+    icon = ["fab", "java"];
+  }
+  if (name.includes('Ruby')) {
+    icon = ["far", "gem"];
+  }
+  if (name.includes('Django')) {
+    icon = ["fab", "python"];
+  }
+  if (name.includes('iOS')) {
+    icon = ["fab", "apple"];
+  }
+  if (name.includes('Android')) {
+    icon = ["fab", "android"];
+  }
+
+  return icon;
+} 
+
+export const getMethodologyNameById = (methodologyId) => {
+  let name = ["", ""];
+
+  switch (methodologyId) {
+    case 1:
+      name = "SPA";
+      break;
+    case 2:
+      name = "SSR";
+      break;
+    case 3:
+      name = "SSG";
+      break;
+    case 4:
+      name = "Back-End+Front-End"
+      break;
+    case 5:
+      name = "REST Api";
+      break;
+    case 6:
+      name = "Mobile";
+      break;
+  }
+
+  return name;
+};

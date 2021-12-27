@@ -166,6 +166,7 @@ export default {
 <style lang="scss">
 .p-calendar {
     flex-direction: row;
+    width: 100%;
 
     @media only screen and (max-width: 576px) {
         flex-direction: column;

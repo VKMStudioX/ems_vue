@@ -195,16 +195,15 @@
           </div>
         </div>
         <div class="p-d-flex p-jc-between" v-else>
-          <div v-tooltip.top="'Delete project'" class="p-mr-4">
+          <div v-tooltip.top="'Delete project'" class="p-mr-4" @click="handleDeleteProject($event, data.id)">
             <font-awesome-icon
-              :icon="['fas', 'user-minus']"
+              :icon="['fas', 'file-excel']"
               class="p-cursor-pointer p-color-remove"
-              @click="handleDeleteProject(data.id)"
             />
           </div>
           <div v-tooltip.top="'Edit project'">
             <font-awesome-icon
-              :icon="['fas', 'user-edit']"
+              :icon="['fas', 'file-signature']"
               class="p-cursor-pointer p-color-edit"
               @click="handleEditProject(data.id)"
             />
@@ -218,6 +217,7 @@
 <script>
 import { useWindowSize } from "vue-window-size";
 import { FilterMatchMode } from "primevue/api";
+import { useConfirm } from "primevue/useconfirm";
 import { ref } from "vue";
 import dayjs from "dayjs";
 
@@ -241,6 +241,7 @@ export default {
   },
   setup(props, { emit }) {
     const { width, height } = useWindowSize();
+    const confirm = useConfirm();
     const selectedProjects = ref();
     const filters = ref({
       global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -254,10 +255,21 @@ export default {
       emit("newProject");
     }
 
-    const handleDeleteProject = (id) => {
-      emit("deleteProject", id);
-    };
-
+    const handleDeleteProject = (event, id) => {
+            confirm.require({
+                target: event.currentTarget,
+                message: 'Do you want to delete this project?',
+                icon: 'pi pi-info-circle',
+                acceptClass: 'p-button-danger',
+                accept: () => {
+                    emit("deleteProject", id);
+                },
+                reject: () => {
+                    
+                }
+            });
+        }
+        
     const handleViewProject = (id) => {
       emit("viewProject", id);
     };

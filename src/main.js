@@ -85,8 +85,8 @@ import {
   faDesktop,
   faDatabase,
   faPhotoVideo,
-  faProjectDiagram
-
+  faProjectDiagram,
+  faFileExcel
 } from "@fortawesome/free-solid-svg-icons";
 import { faReact, faVuejs, faLaravel, faJava, faPython, faApple, faAndroid } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -131,7 +131,7 @@ library.add(
   faDatabase,
   faPhotoVideo,
   faProjectDiagram, 
-  faGem,
+  faGem, faFileExcel,
   faReact, faVuejs, faLaravel, faJava, faPython, faApple, faAndroid
 );
 

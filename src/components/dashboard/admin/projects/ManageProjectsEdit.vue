@@ -133,7 +133,7 @@ export default {
           toast,
           "error",
           "Error!",
-          "Bad reminder data, read the hints below inputs",
+          "Bad project data, read the hints below inputs",
           5000
         );
       }

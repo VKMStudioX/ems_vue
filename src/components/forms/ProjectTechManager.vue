@@ -166,7 +166,7 @@
       <div class="p-col-12">
         <div class="p-inputgroup p-flex p-flex-row p-jc-end">
           <Button
-            label="Clear"
+            label="Clear Technologies"
             icon="pi pi-times"
             iconPos="left"
             class="p-button-danger p-mr-2"
@@ -174,7 +174,7 @@
             @click="handleRemoveAllTechnologies()"
           />
           <Button
-            label="Confirm"
+            :label="isEdit ? 'Edit project' : 'New project'"
             icon="pi pi-check"
             iconPos="right"
             class="p-button-success"
@@ -197,6 +197,18 @@ import { useWindowSize } from "vue-window-size";
 
 export default {
   name: "ProjectTechManagerForm",
+  props: {
+    submitted: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    isEdit: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
+  },
   setup(props, { emit }) {
     const { width, height } = useWindowSize();
     const store = useStore();

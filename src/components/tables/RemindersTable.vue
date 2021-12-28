@@ -173,11 +173,10 @@
       </template>
       <template #body="{ data }">
         <div class="p-d-flex p-jc-between" v-if="isManage">
-          <div v-tooltip.top="'Delete Reminder'" class="p-mr-4">
+          <div v-tooltip.top="'Delete Reminder'" class="p-mr-4"  @click="handleDeleteReminder($event, data.id)">
             <font-awesome-icon
               :icon="['fas', 'user-minus']"
               class="p-cursor-pointer p-color-remove"
-              @click="handleDeleteReminder(data.id)"
             />
           </div>
           <div v-tooltip.top="'Edit Reminder'">
@@ -196,6 +195,7 @@
 <script>
 import { useWindowSize } from "vue-window-size";
 import { FilterMatchMode } from "primevue/api";
+import { useConfirm } from "primevue/useconfirm";
 import { ref } from "vue";
 
 export default {
@@ -218,6 +218,7 @@ export default {
   },
   setup(props, { emit }) {
     const { width, height } = useWindowSize();
+    const confirm = useConfirm();
     const selectedReminders = ref();
     const filters = ref({
       global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -231,9 +232,20 @@ export default {
       emit("newReminder");
     }
 
-    const handleDeleteReminder = (id) => {
-      emit("deleteReminder", id);
-    };
+    const handleDeleteReminder = (event, id) => {
+       confirm.require({
+                target: event.currentTarget,
+                message: 'Do you want to delete this reminder?',
+                icon: 'pi pi-info-circle',
+                acceptClass: 'p-button-danger',
+                accept: () => {
+                    emit("deleteReminder", id);
+                },
+                reject: () => {
+                    
+                }
+            });
+        }
 
     return {
       filters,

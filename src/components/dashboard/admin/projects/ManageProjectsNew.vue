@@ -12,11 +12,11 @@
         @changedVS="handleChangeV$($event)"
         @changedState="handleChangeState($event)"
         :submitted="submitted"
-        :isEdit="true"
+        :isEdit="false"
     />
       <ProjectTechManager
         :submitted="submitted"
-        :isEdit="true"
+        :isEdit="false"
         @selectedTechnologies="handleChangeSelectedTechs($event)"
         @removeTechnologies="handleChangeRemovedTechs($event)"
       />

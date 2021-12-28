@@ -23,9 +23,7 @@
           />
         </div>
         <small v-if="v$.projectName.$invalid && submitted" class="p-error">
-          Project Name is required, should be in range of 3 to 45 characters long, with
-          only small or/and capital letters, numbers and characters like "@",
-          "-", "_", ".".
+          Project Name is required, should be in range of 3 to 45 characters long
         </small>
 
          <span
@@ -48,8 +46,7 @@
           />
         </div>
         <small v-if="v$.clientName.$invalid && submitted" class="p-error">
-          Client name is required, should be in range of 3 to 45 characters long,
-          with only small or/and capital letters.
+          Client name is required, should be in range of 3 to 45 characters long
         </small>
 
       </div>
@@ -73,7 +70,7 @@
             hideOnDateTimeSelect
             :class="{ 'p-invalid': v$.startDate.$invalid && submitted }"
             :minDate="new Date()"
-            title="The minimum date to choose is today and there is no restrictions for maximum date."
+            title="The start date to choose is today and there is no restrictions for maximum date."
           >
           </Calendar>
         </div>
@@ -96,16 +93,17 @@
             dateFormat="yy-mm-dd"
             :showButtonBar="false"
             :manualInput="false"
-            placeholder="End date"
+            placeholder="End date - first select the start date"
             hideOnDateTimeSelect
             :class="{ 'p-invalid': v$.endDate.$invalid && submitted }"
-            :minDate="new Date()"
-            title="The minimum date to choose is today and there is no restrictions for maximum date."
+            :disabled="!v$.startDate.$model"
+            :minDate="v$.startDate.$model"
+            title="The end date to choose is start date and there is no restrictions for maximum date."
           >
           </Calendar>
         </div>
         <small v-if="v$.endDate.$invalid && submitted" class="p-error"
-          >Expire date is required. The minimum date to choose is today and
+          >End date is required. The minimum date to choose is start date and
           there is no restrictions for maximum date.
         </small>
 
@@ -126,6 +124,7 @@
           rows="5"
           cols="30"
           placeholder="Type project info"
+          :class="{ 'p-invalid': v$.projectInfo.$invalid && submitted }"
           minLength="3"
           maxLength="255"
           title="Project info is required. This field should be in range of 3 to 255 characters."
@@ -278,15 +277,15 @@ export default {
         maxLength: maxLength(45),
         // valid: validationRegExName,
       },
-      startDate: { required: requiredIf((v) => v !== null) },
-      endDate: { required: requiredIf((v) => v !== null) },
+      startDate: { required },
+      endDate: { required },
       projectInfo: {
         required,
         minLength: minLength(3),
         maxLength: maxLength(255),
         // valid: validationRegExName,
       },
-      projectUsers: { required: requiredIf((v) => v !== null) }
+      projectUsers: { required }
     };
 
     const v$ = useVuelidate(rules, state);

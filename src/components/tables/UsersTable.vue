@@ -184,11 +184,10 @@
       </template>
       <template #body="{ data }">
         <div class="p-d-flex p-jc-between">
-          <div v-tooltip.top="'Delete user'" class="p-mr-4">
+          <div v-tooltip.top="'Delete user'" class="p-mr-4" @click="handleDeleteUser($event, data.id)">
             <font-awesome-icon
               :icon="['fas', 'user-minus']"
               class="p-cursor-pointer p-color-remove"
-              @click="handleDeleteUser(data.id)"
             />
           </div>
           <div v-tooltip.top="'Edit user'">
@@ -207,6 +206,7 @@
 <script>
 import { useWindowSize } from "vue-window-size";
 import { FilterMatchMode } from "primevue/api";
+import { useConfirm } from "primevue/useconfirm";
 import { ref } from "vue";
 
 export default {
@@ -224,6 +224,7 @@ export default {
   },
   setup(props, { emit }) {
     const { width, height } = useWindowSize();
+    const confirm = useConfirm();
     const selectedUsers = ref();
     const filters = ref({
       global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -237,9 +238,20 @@ export default {
       emit("newUser");
     }
 
-    const handleDeleteUser = (id) => {
-      emit("deleteUser", id);
-    };
+    const handleDeleteUser = (event, id) => {
+            confirm.require({
+                target: event.currentTarget,
+                message: 'Do you want to delete this user?',
+                icon: 'pi pi-info-circle',
+                acceptClass: 'p-button-danger',
+                accept: () => {
+                    emit("deleteUser", id);
+                },
+                reject: () => {
+                    
+                }
+            });
+        }
 
     return {
       filters,

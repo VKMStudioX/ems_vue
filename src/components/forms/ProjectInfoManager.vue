@@ -188,7 +188,7 @@
           >{{
             v$.projectUsers.required.$message.replace(
               "Value",
-              "At least one day"
+              "At least one user"
             )
           }}.</small
         >

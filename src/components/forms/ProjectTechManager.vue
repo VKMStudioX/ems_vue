@@ -132,7 +132,7 @@
           scrollHeight="flex"
         >
           <template #empty> No selections found </template>
-          <Column field="ship_name" header="Selected (User Technologies)">
+          <Column field="data_key" header="Selected (Project Technologies)">
             <template #body="{ data }">
               <div
                 class="p-selected-technologies-body"

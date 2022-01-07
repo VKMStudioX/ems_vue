@@ -10,6 +10,7 @@
     >
     <ProjectInfoTechView 
         :submitted="submitted"
+
     />
     </form>
     </div>
@@ -49,6 +50,10 @@ export default {
 
     const userId = computed(() => store.getters["auth/userId"]);
 
+    const projectUsers = computed(() => store.getters["admin/prjUsers"]);
+    
+    const dispatchName = computed(() => projectUsers.value.some(v => v.id === userId.value) ? 'admin/exitFromProject' : 'admin/participateInProject');
+    
     const submitted = ref(false);
 
     const handleSubmit = (isFormValid) => {
@@ -63,9 +68,13 @@ export default {
         }
 
         console.log(participateInProjectData)
+
+        
+        console.log(dispatchName.value)
+
           participateInProjectData
           ? store
-              .dispatch("admin/participateInProject", participateInProjectData)
+              .dispatch(dispatchName.value, participateInProjectData)
               .then(
                 (res) => {
                   createToast(

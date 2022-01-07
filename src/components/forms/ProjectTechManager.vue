@@ -140,7 +140,8 @@
                    `Type: ${data.type_id === 1 ? 'Front-End' : data.type_id === 2 ? 'Back-End' : 'Mobile'}, 
                    Methodology: ${getMethodologyNameById(data.methodology_id)},
                    Technology: ${data.technology},
-                   Language: ${data.language}`
+                   Language: ${data.language}
+                   TechnologyId: ${data.id}`
                 "
               >
                 <font-awesome-icon
@@ -223,13 +224,14 @@ export default {
 
     const projectTechnologies = computed(() => store.getters["admin/prjTechnologies"])
 
-    const types = ref(typesWebData.value && typesWebData.value);
+    // const types = ref(typesWebData.value && typesWebData.value);
+    const types = ref([])
     const selectedTypes = ref([]);
 
     const methodologies = ref([]);
     const selectedMethodologies = ref([]);
     const purposes = ref(purposesData.value && purposesData.value);
-    const selectedPurposes = ref(purposesData.value && purposesData.value[0]);
+    const selectedPurposes = ref([]);
 
     const technologies = ref();
     const selectedTechnologies = ref(projectTechnologies.value && projectTechnologies.value);
@@ -243,10 +245,12 @@ export default {
 
     watch(selectedPurposes, (value, prevValue) => {
       if (value !== prevValue) {
-         types.value =
-          selectedPurposes.value.name === "Web"
-            ? typesWebData.value
-            : typesMobileData.value;
+        //  types.value =
+        //   selectedPurposes.value.name === "Web"
+        //     ? typesWebData.value
+        //     : typesMobileData.value;
+
+        types.value = selectedPurposes.value.types
 
         technologies.value = [];
         selectedTypes.value = [];
@@ -258,12 +262,13 @@ export default {
     watch(selectedTypes, (value, prevValue) => {
       if (value !== prevValue) {
         
-        selectedTypes.value.name === "Mobile"
-        ? methodologies.value = computed(() => store.getters["admin/methodologies"](3)).value
-          : selectedTypes.value.name === "Front-End"
-            ? methodologies.value = computed(() => store.getters["admin/methodologies"](1)).value
-            : methodologies.value = computed(() => store.getters["admin/methodologies"](2)).value
+        // selectedTypes.value.name === "Mobile"
+        // ? methodologies.value = computed(() => store.getters["admin/methodologies"](3)).value
+        //   : selectedTypes.value.name === "Front-End"
+        //     ? methodologies.value = computed(() => store.getters["admin/methodologies"](1)).value
+        //     : methodologies.value = computed(() => store.getters["admin/methodologies"](2)).value
 
+        methodologies.value = selectedTypes.value.methodologies;
         technologies.value = [];
         selectedMethodologies.value = [];
       }
@@ -271,7 +276,7 @@ export default {
 
     watch(selectedMethodologies, (value, prevValue) => {
       if (value !== prevValue) {
-        technologies.value = computed(() => store.getters["admin/technologies"](value.id)).value;
+        technologies.value = selectedMethodologies.value.technologies
       }
     });
 
@@ -410,9 +415,9 @@ export default {
       
       loadingTechList,
       blockUI,
-      technologies,
       removeTechnologies,
 
+      
       getIconByName,
       getMethodologyNameById,
       handleSingleSelection,

@@ -11,7 +11,7 @@
       <MenuTop />
     </div>
 
-    <div class="p-xs-12 p-sm-4 p-md-3 p-p-2">
+    <div class="p-xs-12 p-sm-4 p-md-3 p-p-2 p-user-panel">
       <UserPanel />
     </div>
   </div>
@@ -46,6 +46,10 @@ export default {
 
 .p-text-large {
   font-size: 2.5rem;
+}
+
+.p-user-panel {
+  z-index: 10 !important;
 }
 
 </style>

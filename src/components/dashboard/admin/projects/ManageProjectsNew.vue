@@ -86,13 +86,11 @@ export default {
             project_name: projectState && projectState.target.projectName,
             client_name: projectState && projectState.target.clientName,
             project_info: projectState && projectState.target.projectInfo,
-            project_start: projectState && dayjs(convertDateToUTC(projectState.target.startDate)).format(
-              "YYYY-MM-DD HH:mm:ss"),
-            project_end: projectState && dayjs(convertDateToUTC(projectState.target.endDate)).format(
-              "YYYY-MM-DD HH:mm:ss"),
+            project_start: projectState && dayjs(projectState.target.startDate).format("YYYY-MM-DD"),
+            project_end: projectState && dayjs(projectState.target.endDate).format("YYYY-MM-DD"),
           },
-          project_users: projectState && projectState.target.projectUsers,
-          project_technologies: projectTechs && projectTechs.value,
+          project_users: projectState && projectState.target.projectUsers.map(v => v.id),
+          project_technologies: projectTechs && projectTechs.value.map(v => v.id),
         }
 
         console.log(newProjectData)

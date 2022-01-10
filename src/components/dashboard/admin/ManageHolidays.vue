@@ -55,10 +55,8 @@ export default {
 
                 //FORMING THE VOID (REQUEST)
                 const holidaysData = {
-                  holidays: holidays.value.dates.map(date => dayjs(convertDateToUTC(date)).format(
-              "YYYY-MM-DD HH:mm:ss")),
-                  removed_holidays: holidays.value.removedDates.map(date => dayjs(convertDateToUTC(date)).format(
-              "YYYY-MM-DD HH:mm:ss")),
+                  holidays: holidays.value.dates.map(date => dayjs(date).format("YYYY-MM-DD")),
+                  removed_holidays: holidays.value.removedDates.map(date => dayjs(date).format("YYYY-MM-DD")),
                 }
 
                      store

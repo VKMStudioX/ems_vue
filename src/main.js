@@ -49,125 +49,125 @@ import "vue-json-pretty/lib/styles.css";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faSquare, faCheckSquare, faTimesCircle, faGem } from "@fortawesome/free-regular-svg-icons";
 import {
-  faCalendarWeek,
-  faCalendarDay,
-  faClock,
-  faUser,
-  faUserLock,
-  faUserCheck,
-  faUserCog,
-  faUserMinus,
-  faUserPlus,
-  faUserEdit,
-  faUserTag,
-  faUserShield,
-  faList,
-  faShip,
-  faCalendarTimes,
-  faEnvelope,
-  faLock,
-  faSignInAlt,
-  faSignOutAlt,
-  faTimes,
-  faLaptopHouse,
-  faSync,
-  faKey,
-  faFileSignature,
-  faStopwatch,
-  faStickyNote,
-  faUserTimes,
-  faTimesCircle as faTimesCircleSolid,
-  faHouseUser,
-  faCog,
-  faHeading,
-  faFileAlt,
-  faMobileAlt,
-  faDesktop,
-  faDatabase,
-  faPhotoVideo,
-  faProjectDiagram,
-  faFileExcel
+    faCalendarWeek,
+    faCalendarDay,
+    faClock,
+    faUser,
+    faUserLock,
+    faUserCheck,
+    faUserCog,
+    faUserMinus,
+    faUserPlus,
+    faUserEdit,
+    faUserTag,
+    faUserShield,
+    faList,
+    faShip,
+    faCalendarTimes,
+    faEnvelope,
+    faLock,
+    faSignInAlt,
+    faSignOutAlt,
+    faTimes,
+    faLaptopHouse,
+    faSync,
+    faKey,
+    faFileSignature,
+    faStopwatch,
+    faStickyNote,
+    faUserTimes,
+    faTimesCircle as faTimesCircleSolid,
+    faHouseUser,
+    faCog,
+    faHeading,
+    faFileAlt,
+    faMobileAlt,
+    faDesktop,
+    faDatabase,
+    faPhotoVideo,
+    faProjectDiagram,
+    faFileExcel
 } from "@fortawesome/free-solid-svg-icons";
-import { faReact, faVuejs, faLaravel, faJava, faPython, faApple, faAndroid } from "@fortawesome/free-brands-svg-icons";
+import { faReact, faVuejs, faLaravel, faJava, faPython, faApple, faAndroid, faNodeJs } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 library.add(
-  faHeading,
-  faCalendarWeek,
-  faCalendarDay,
-  faClock,
-  faSquare,
-  faCheckSquare,
-  faUser,
-  faUserLock,
-  faUserCheck,
-  faUserCog,
-  faUserMinus,
-  faUserPlus,
-  faUserEdit,
-  faUserTag,
-  faUserShield,
-  faList,
-  faShip,
-  faCalendarTimes,
-  faEnvelope,
-  faLock,
-  faSignInAlt,
-  faSignOutAlt,
-  faTimes,
-  faLaptopHouse,
-  faSync,
-  faKey,
-  faFileSignature,
-  faStopwatch,
-  faStickyNote,
-  faUserTimes,
-  faTimesCircleSolid,
-  faHouseUser,
-  faCog,
-  faFileAlt,
-  faMobileAlt,
-  faDesktop,
-  faDatabase,
-  faPhotoVideo,
-  faProjectDiagram, 
-  faGem, faFileExcel,
-  faReact, faVuejs, faLaravel, faJava, faPython, faApple, faAndroid
+    faHeading,
+    faCalendarWeek,
+    faCalendarDay,
+    faClock,
+    faSquare,
+    faCheckSquare,
+    faUser,
+    faUserLock,
+    faUserCheck,
+    faUserCog,
+    faUserMinus,
+    faUserPlus,
+    faUserEdit,
+    faUserTag,
+    faUserShield,
+    faList,
+    faShip,
+    faCalendarTimes,
+    faEnvelope,
+    faLock,
+    faSignInAlt,
+    faSignOutAlt,
+    faTimes,
+    faLaptopHouse,
+    faSync,
+    faKey,
+    faFileSignature,
+    faStopwatch,
+    faStickyNote,
+    faUserTimes,
+    faTimesCircleSolid,
+    faHouseUser,
+    faCog,
+    faFileAlt,
+    faMobileAlt,
+    faDesktop,
+    faDatabase,
+    faPhotoVideo,
+    faProjectDiagram,
+    faGem, faFileExcel,
+    faReact, faVuejs, faLaravel, faJava, faPython, faApple, faAndroid, faNodeJs
 );
 
 createApp(App)
-  .use(store)
-  .use(router)
-  .use(PrimeVue, { ripple: true })
-  .use(ToastService)
-  .use(Vuelidate)
-  .use(ConfirmationService)
-  .component("VueJsonPretty", VueJsonPretty)
-  .directive("tooltip", Tooltip)
-  .component("InputText", InputText)
-  .component("InputNumber", InputNumber)
-  .component("Password", Password)
-  .component("Button", Button)
-  .component("Checkbox", Checkbox)
-  .component("RadioButton", RadioButton)
-  .component("ProgressSpinner", ProgressSpinner)
-  .component("Toast", Toast)
-  .component("TabMenu", TabMenu)
-  .component("Menu", Menu)
-  .component("Panel", Panel)
-  .component("DataTable", DataTable)
-  .component("Column", Column)
-  .component("ColumnGroup", ColumnGroup)
-  .component("ToggleButton", ToggleButton)
-  .component("Calendar", Calendar)
-  .component("Dropdown", Dropdown)
-  .component("MultiSelect", MultiSelect)
-  .component("BlockUI", BlockUI)
-  .component("Dialog", Dialog)
-  .component("ConfirmPopup", ConfirmPopup)
-  .component("OverlayPanel", OverlayPanel)
-  .component("Textarea", Textarea)
-  .component("Card", Card)
-  .component("Loader", Loader)
-  .component("font-awesome-icon", FontAwesomeIcon)
-  .mount("#app");
+    .use(store)
+    .use(router)
+    .use(PrimeVue, { ripple: true })
+    .use(ToastService)
+    .use(Vuelidate)
+    .use(ConfirmationService)
+    .component("VueJsonPretty", VueJsonPretty)
+    .directive("tooltip", Tooltip)
+    .component("InputText", InputText)
+    .component("InputNumber", InputNumber)
+    .component("Password", Password)
+    .component("Button", Button)
+    .component("Checkbox", Checkbox)
+    .component("RadioButton", RadioButton)
+    .component("ProgressSpinner", ProgressSpinner)
+    .component("Toast", Toast)
+    .component("TabMenu", TabMenu)
+    .component("Menu", Menu)
+    .component("Panel", Panel)
+    .component("DataTable", DataTable)
+    .component("Column", Column)
+    .component("ColumnGroup", ColumnGroup)
+    .component("ToggleButton", ToggleButton)
+    .component("Calendar", Calendar)
+    .component("Dropdown", Dropdown)
+    .component("MultiSelect", MultiSelect)
+    .component("BlockUI", BlockUI)
+    .component("Dialog", Dialog)
+    .component("ConfirmPopup", ConfirmPopup)
+    .component("OverlayPanel", OverlayPanel)
+    .component("Textarea", Textarea)
+    .component("Card", Card)
+    .component("Loader", Loader)
+    .component("font-awesome-icon", FontAwesomeIcon)
+    .mount("#app");

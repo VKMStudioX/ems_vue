@@ -140,8 +140,7 @@
                    `Type: ${data.type_id === 1 ? 'Front-End' : data.type_id === 2 ? 'Back-End' : 'Mobile'}, 
                    Methodology: ${getMethodologyNameById(data.methodology_id)},
                    Technology: ${data.technology},
-                   Language: ${data.language}
-                   TechnologyId: ${data.id}`
+                   Language: ${data.language}`
                 "
               >
                 <font-awesome-icon

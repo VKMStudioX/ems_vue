@@ -1,9 +1,19 @@
 <template>
-  <div>
+  <div class="app-layout__wrapper">
       <div v-if="loading">
             <Loader />
         </div>
-        <div v-else>
+        <div v-else class="main">
+          <Header
+              class="main__header"
+              title="Reminders"
+              navTitle1="Manage"
+              navTitle2="Reminders"
+              navTitle3="New Reminder"
+              navLink2="/manage-reminders"
+              navLink3="/new-reminder"
+          />
+          <div class="main__container">
     <form
       @submit.prevent="handleSubmit(!validate.$invalid)"
       @invalid.capture.prevent="handleInvalid()"
@@ -15,6 +25,7 @@
         :isEdit="false"
       />
     </form>
+          </div>
     </div>
   </div>
 </template>
@@ -26,10 +37,11 @@ import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 import { createToast } from "@/functions/utils";
 import ReminderForm from "@/components/forms/ReminderForm";
+import Header from "@/components/commons/Header";
 
 export default {
   name: "ManageReminderNew",
-  components: { ReminderForm },
+  components: { ReminderForm, Header },
   setup() {
     const toast = useToast();
     const store = useStore();
@@ -37,13 +49,13 @@ export default {
 
     const loading = ref(true);
     onMounted(async () => {
-      await store.dispatch("admin/getNewReminder").then(
+      await store.dispatch("reminder/getNewReminder").then(
         () => (loading.value = false),
         (error) => console.error(error)
       );
     });
 
-    const errorMsg = computed(() => store.getters["admin/apiErrorMsg"]);
+    const errorMsg = computed(() => store.getters["reminder/apiErrorMsg"]);
 
 
     // USERDATA & FORM VALIDATION
@@ -66,15 +78,15 @@ export default {
         //FORMING THE VOID (REQUEST)
 
         const reminderData = {
-              days_of_week: reminderState && reminderState.target.selectedDOW.toString(),
-              hour_of_reminder: reminderState && reminderState.target.selectedHOR,
-              title_of_reminder: reminderState && reminderState.target.titleOfReminder,
-              text_of_reminder: reminderState && reminderState.target.textOfReminder,
-              active_reminder: reminderState && reminderState.target.activeReminder,
+              days_of_week: reminderState && reminderState.target.selectedDOW.map(v => v.id).toString(),
+              hour: reminderState && reminderState.target.selectedHOR,
+              title: reminderState && reminderState.target.titleOfReminder,
+              text: reminderState && reminderState.target.textOfReminder,
+              active: reminderState && reminderState.target.activeReminder,
            };
 
         store
-              .dispatch("admin/newReminder", reminderData)
+              .dispatch("reminder/newReminder", reminderData)
               .then(
                 (res) => {
                   createToast(
@@ -85,7 +97,7 @@ export default {
                     5000
                   );
                   router.push({
-                    path: "/dashboard/manage-reminders",
+                    path: "/manage-reminders",
                   });
                 },
                 (error) => {

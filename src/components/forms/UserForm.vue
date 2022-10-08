@@ -1,17 +1,20 @@
 <template>
-  <div class="p-user-data-form p-m-4">
-    <h4 class="p-text-center p-text-uppercase p-m-4">{{ isEdit ? 'Edit user Data' : 'Create new user' }}</h4>
+  <div class="form">
+    <span class="form__header text-inter text-primary heading-tertiary">{{ isEdit ? 'Edit user Data' : 'Create new user' }}</span>
 
-    <div class="p-grid p-fluid p-jc-center">
-      <div class="p-col-12 p-md-4">
+      <div class="form__content-1">
+
+<!--         FIRST NAME -->
         <span
           class="p-label"
-          :class="{ 'p-error': v$.firstName.$invalid && submitted }"
+          :class="{ 'p-invalid': v$.firstName.$invalid && submitted }"
           >First name</span
         >
-        <div class="p-inputgroup">
+        <div class="p-inputgroup"
+             :class="{ 'p-invalid': v$.firstName.$invalid && submitted }"
+        >
           <span class="p-inputgroup-addon">
-            <font-awesome-icon :icon="['fas', 'user']" />
+            <SvgIcon icon="users" class="p-input-icon"/>
           </span>
           <InputText
             v-model="v$.firstName.$model"
@@ -20,27 +23,25 @@
             required
             placeholder="Type first name"
             @keypress="nameKeypress($event)"
-            :class="{ 'p-invalid': v$.firstName.$invalid && submitted }"
             title="First name is required, should be in range of 3 to 45 characters long, &#10;with only small or/and capital letters."
           />
         </div>
-        <small v-if="v$.firstName.$invalid && submitted" class="p-error">
-          First name is required, should be in range of 3 to 45 characters long,
-          with only small or/and capital letters.
+        <small v-if="v$.firstName.$invalid && submitted" class="p-invalid">
+          First name is required, should be in range of 3 to 45 characters long, with only small or/and capital letters.
         </small>
-    </div>
-  </div>
 
-    <div class="p-grid p-fluid p-jc-center">
-      <div class="p-col-12 p-md-4">
+
+<!--  LAST NAME -->
        <span
           class="p-label"
-          :class="{ 'p-error': v$.lastName.$invalid && submitted }"
+          :class="{ 'p-invalid': v$.lastName.$invalid && submitted }"
           >Last Name</span
         >
-        <div class="p-inputgroup">
+        <div class="p-inputgroup"
+             :class="{ 'p-invalid': v$.lastName.$invalid && submitted }"
+        >
           <span class="p-inputgroup-addon">
-            <font-awesome-icon :icon="['fas', 'user']" />
+            <SvgIcon icon="users" class="p-input-icon"/>
           </span>
           <InputText
             v-model="v$.lastName.$model"
@@ -49,145 +50,130 @@
             required
             placeholder="Type last name"
             @keypress="nameKeypress($event)"
-            :class="{ 'p-invalid': v$.lastName.$invalid && submitted }"
             title="Last name is required, should be in range of 3 to 45 characters long, &#10;with only small or/and capital letters."
           />
         </div>
-        <small v-if="v$.lastName.$invalid && submitted" class="p-error">
-          Last name is required, should be in range of 3 to 45 characters
-          long, with only small or/and capital letters.
+        <small v-if="v$.lastName.$invalid && submitted" class="p-invalid">
+          Last name is required, should be in range of 3 to 45 characters long, with only small or/and capital letters.
         </small>
-      </div>
-    </div>
 
-    <div class="p-grid p-fluid p-jc-center">
-      <div class="p-col-12 p-md-4">
+
+<!--         EMAIL -->
         <span
           class="p-label"
-          :class="{ 'p-error': v$.email.$invalid && submitted }"
+          :class="{ 'p-invalid': v$.email.$invalid && submitted }"
           >Email</span
         >
-        <div class="p-inputgroup">
+        <div class="p-inputgroup"
+             :class="{ 'p-invalid': v$.email.$invalid && submitted }">
           <span
             class="p-inputgroup-addon"
           >
-            <font-awesome-icon :icon="['fas', 'envelope']" />
+            <SvgIcon icon="email" class="p-input-icon"/>
           </span>
           <InputText
             v-model="v$.email.$model"
             minLength="3"
             maxLength="45"
             required
-            placeholder="Type email@company.com"
+            placeholder="Type email address"
             @keypress="emailKeypress($event)"
-            :class="{
-              'p-invalid': v$.email.$invalid && submitted,
-            }"
             title="Email is required, should be in range of 3 to 45 characters, with only &#10;small or capital letters, numbers and characters like '- _ .' ."
           />
         </div>
-        <small v-if="v$.email.$invalid && submitted" class="p-error p-d-block">
-          Email is required, should be in range of 3 to 45 characters, with only
-          small or capital letters, numbers and characters like "-" "_" ".".
+        <small v-if="v$.email.$invalid && submitted" class="p-invalid p-d-block">
+          Email is required, should be in range of 3 to 45 characters, with only small or capital letters, numbers and characters like "-" "_" ".".
         </small>
         <small
           v-if="!isEdit && v$.email.valid.$invalid"
-          class="p-error p-d-block"
+          class="p-invalid p-d-block"
         >
           The user data.email has already been taken.
         </small>
       </div>
-    </div>
 
-    <div class="p-grid p-fluid p-jc-center">
-      <div class="p-col-12 p-md-4">
+
+
+    <div class="form__content-2">
+
+<!--       PASSWORD -->
         <span
           class="p-label"
-          :class="{ 'p-error': v$.isAdmin.$invalid && submitted }"
-          >is Admin ?</span
-        >
-        <div class="p-inputgroup">
-          <span class="p-inputgroup-addon">
-            <font-awesome-icon :icon="['fas', 'user-lock']" />
-          </span>
-          <ToggleButton
-            v-model="v$.isAdmin.$model"
-            onLabel="User is Admin"
-            offLabel="User is not Admin"
-            onIcon="pi pi-check"
-            offIcon="pi pi-times"
-            class="p-auth-button"
-            :class="{ 'p-invalid': v$.isAdmin.$invalid && submitted }"
-            title="isAdmin? is required (Admin or Not admin)."
-          />
-        </div>
-        <small v-if="v$.isAdmin.$invalid && submitted" class="p-error"
-          >{{
-            v$.isAdmin.required.$message.replace("Value", "Authorization")
-          }}.</small
-        >
-      </div>
-    </div>
-    <div class="p-grid p-fluid p-jc-center">
-      <div class="p-col-12 p-md-4">
-        <span
-          class="p-label"
-          :class="{ 'p-error': v$.password.$invalid && submitted }"
+          :class="{ 'p-invalid': v$.password.$invalid && submitted }"
           >Password</span
         >
-        <div class="p-inputgroup">
+
+        <div class="p-inputgroup" :class="{ 'p-invalid': v$.password.$invalid && submitted }"
+        >
           <span class="p-inputgroup-addon">
-            <font-awesome-icon :icon="['fas', 'lock']" />
+            <SvgIcon icon="lock" class="p-input-icon"/>
           </span>
           <Password
             v-model="v$.password.$model"
             toggleMask
             :feedback="false"
-            inputClass="p-password"
             placeholder="Type password"
-            :class="{ 'p-invalid': v$.password.$invalid && submitted }"
+            inputClass="p-password"
             minLength="10"
             maxLength="10"
             title="Password is required only for new users or when need to change existing user password. &#10;Password must be 10 characters long, with only capital and small letters, number and special character."
           ></Password>
-          <Button
-            label="Generate"
-            class="p-button-outlined p-button-info p-password-button"
-            @click="handleGeneratePassword()"
-          ></Button>
         </div>
-        <small
+
+      <small
           v-if="v$.password.$invalid && submitted"
-          class="p-error p-d-block"
-          >{{
-            v$.password.required.$invalid === true
+          class="p-invalid"
+      >{{
+          v$.password.required.$invalid === true
               ? `${v$.password.required.$message.replace("value", "Password")}.`
               : null
-          }}
-        </small>
-        <small
+        }}
+      </small>
+      <small
           v-if="v$.password.$invalid && submitted"
-          class="p-error p-d-block"
+          class="p-invalid"
+      >
+        Password is required only for new users or when need to change existing user password.
+        Password must be 10 characters long, with only capital and small letters, number and special character.
+      </small>
+      <div class="p-password-generate">
+      <Button
+        label="Generate"
+        class="button--small button--small-font-size button--secondary button--secondary-outline"
+        @click="handleGeneratePassword()"
+    ></Button>
+    </div>
+
+
+
+
+
+      <!--   IS ADMIN ? -->
+      <span
+          class="p-label"
+          :class="{ 'p-invalid': v$.isAdmin.$invalid && submitted }"
+      >is Admin ?</span
+      >
+      <Switch v-model="v$.isAdmin.$model" />
+      <small v-if="v$.isAdmin.$invalid && submitted" class="p-invalid"
+      >{{
+          v$.isAdmin.required.$message.replace("Value", "Authorization")
+        }}.</small
+      >
+    </div>
+
+    <div class="form__footer">
+      <div class="form__footer--button">
+        <Button
+            class="button button--secondary"
+            type="submit"
         >
-          Password is required only for new users or when need to change
-          existing user password. Password must be 10 characters long, with only
-          capital and small letters, number and special character.
-        </small>
+          <span class="text-inter text-small">Confirm</span>
+        </Button>
       </div>
     </div>
 
-    <div class="p-grid p-fluid p-jc-center p-mt-2">
-      <div class="p-col-12 p-md-4">
-        <Button
-          label="Confirm"
-          icon="pi pi-check"
-          iconPos="right"
-          class="p-button-success"
-          :class="1400 > windowWidth ? 'p-button-sm' : ''"
-          type="submit"
-        />
-      </div>
-    </div>
+
   </div>
 </template>
 
@@ -213,9 +199,11 @@ import {
   validationFromAPI,
 } from "../../functions/utils";
 import { useWindowSize } from "vue-window-size";
+import Switch from "@/components/commons/Switch";
 
 export default {
   name: "EmcUserDataForm",
+  components: {Switch},
   props: {
     submitted: {
       type: Boolean,
@@ -247,7 +235,7 @@ export default {
     });
 
     const handleGeneratePassword = () => {
-      state.password = generatePassword();
+       state.password = generatePassword();
     };
 
     const rules = {

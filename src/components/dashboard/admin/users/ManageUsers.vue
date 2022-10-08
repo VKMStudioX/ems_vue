@@ -1,9 +1,16 @@
 <template>
-    <div>
+    <div class="app-layout__wrapper">
         <div v-if="loading">
             <Loader />
         </div>
-        <div v-else class="p-mx-4 p-my-2">
+      <div v-else class="main">
+        <Header
+            class="main__header"
+            title="Users"
+            navTitle1="Manage"
+            navTitle2="Users"
+        />
+        <div class="main__container">
             <UsersTable
                 :users="users"
                 :loading="loading"
@@ -12,6 +19,7 @@
                 @editUser="handleEditUser($event)"
                 @newUser="handleNewUser()"
             />
+        </div>
         </div>
     </div>
 </template>
@@ -23,10 +31,11 @@ import { useRoute, useRouter } from "vue-router";
 import { computed, onMounted, ref } from "vue";
 import { createToast } from "@/functions/utils";
 import UsersTable from "@/components/tables/UsersTable";
+import Header from "@/components/commons/Header";
 
 export default {
     name: "ManageUsers",
-    components: { UsersTable },
+    components: { UsersTable, Header },
     setup() {
         const store = useStore();
         const toast = useToast();
@@ -55,7 +64,7 @@ export default {
                 .dispatch("admin/deleteUser", id)
                 .then(
                     (res) => {
-                        createToast(toast, "warn", "Success!", `${res.data.message}`, 2000);
+                        createToast(toast, "success", "Success!", `${res.data.message}`, 2000);
                         getAllUsers();
                     },
                     (error) => console.error(error)
@@ -68,14 +77,14 @@ export default {
 
         const handleEditUser = (id) => {
             router.push({
-                path: "/dashboard/edit-user",
+                path: "/edit-user",
                 query: { id: id },
             });
         };
 
         const handleNewUser = () => {
             router.push({
-                path: "/dashboard/new-user",
+                path: "/new-user",
             });
         };
 

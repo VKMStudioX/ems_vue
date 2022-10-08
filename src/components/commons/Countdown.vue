@@ -1,12 +1,13 @@
 <template>
   <div @click="isWarning && countdownReset($event)">
-    <font-awesome-icon
-      :icon="['fas', 'stopwatch']"
-      :style="{ color: countdownColor() }"
-      class="p-mr-1"
-      :class="{ 'p-cursor-pointer': isWarning }"
-    />
+<!--    <font-awesome-icon-->
+<!--      :icon="['fas', 'stopwatch']"-->
+<!--      :style="{ color: countdownColor() }"-->
+<!--      class="p-mr-1"-->
+<!--      :class="{ 'p-cursor-pointer': isWarning }"-->
+<!--    />-->
     <span
+      class="heading-primary"
       :style="{ color: countdownColor() }"
       :class="{ 'p-cursor-pointer': isWarning }"
       >{{ formattedTimeLeft }}</span
@@ -40,7 +41,7 @@ export default {
   setup(props, { emit }) {
     const colorCodes = {
       info: {
-        color: "var(--text-color)",
+        color: "var(--color-primary-text)",
       },
       warning: {
         color: "var(--yellow-500)",

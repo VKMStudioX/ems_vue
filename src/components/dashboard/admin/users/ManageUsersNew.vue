@@ -1,9 +1,19 @@
 <template>
-  <div>
+  <div class="app-layout__wrapper">
       <div v-if="loading">
             <Loader />
         </div>
-        <div v-else>
+    <div v-else class="main">
+      <Header
+          class="main__header"
+          title="Users"
+          navTitle1="Manage"
+          navTitle2="Users"
+          navTitle3="New User"
+          navLink2="/manage-users"
+          navLink3="/new-user"
+      />
+      <div class="main__container">
     <form
       @submit.prevent="handleSubmit(!validate.$invalid)"
       @invalid.capture.prevent="handleInvalid()"
@@ -17,6 +27,7 @@
     </form>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
@@ -26,10 +37,11 @@ import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 import { createToast } from "@/functions/utils";
 import UserForm from "@/components/forms/UserForm";
+import Header from "@/components/commons/Header";
 
 export default {
   name: "ManageUsersNew",
-  components: { UserForm },
+  components: { UserForm, Header },
   setup() {
     const toast = useToast();
     const store = useStore();
@@ -84,7 +96,7 @@ export default {
                     5000
                   );
                   router.push({
-                    path: "/dashboard/manage-users",
+                    path: "/manage-users",
                   });
                 },
                 (error) => {

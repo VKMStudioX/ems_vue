@@ -1,0 +1,78 @@
+.sidebar {
+  @include flex(column,space-between, flex-start);
+  box-shadow: 0.5rem 0.75rem 2rem rgba($color-shadow, 0.06);
+  padding: 2rem 2.5rem 2.75rem 2rem;
+  background: url('~@/assets/img/sidebar-bg.png') no-repeat;
+  min-height: 100vh;
+  position: fixed;
+
+  @include respond(md) {
+    position: relative;
+  }
+
+  &--active {
+    width: 16.188rem;
+    display: block;
+  }
+
+  &--inactive {
+    display: none;
+  }
+
+  &__logo {
+    width: 6.063rem;
+    height: 4.375rem;
+  }
+
+  &__divider {
+    height: 0.125rem;
+    min-width: 11.188rem;
+    border-radius: 1.313rem;
+    background: $color-secondary-light-1;
+  }
+
+  &__menu {
+    display: block;
+    height: 50vh;
+
+    @include respond(sm) {
+      height: 40vh;
+    }
+  }
+
+  &__user-panel {
+    @include flex(row,center,center);
+
+    &--icon {
+      color: rgba($color-primary, 0.2);
+      height: 1.75rem;
+      width: 1.75rem;
+      margin-right: 0.625rem;
+    }
+  }
+
+  &__logout {
+    display: block;
+    width: 100%;
+  }
+
+}
+
+.p-sidebar {
+  & .p-sidebar-header {
+    padding: 1rem;
+    position: absolute;
+    z-index: 100;
+    right: 0;
+    overflow: hidden;
+
+    @include respond(18.75rem) {
+      right: 7.5%;
+    }
+  }
+
+  & .p-sidebar-content {
+    padding: 0rem;
+  }
+
+}

@@ -1,0 +1,25 @@
+.checkbox {
+  //background: $color-gray-light-1;
+  //border: 0.063px solid rgba($color-secondary, 0.2);
+  box-sizing: border-box;
+  //border-radius: 0.25px;
+  width:1.5rem;
+  height: 1.5rem;
+  position: relative;
+
+  &--checkmark {
+    @include absCenter();
+    width: 0.75rem;
+    height: 0.625rem;
+    color: $color-primary;
+  }
+
+  &--close{
+    @include absCenter();
+    width: 1rem;
+    height: 1rem;
+    color: $color-error-1;
+  }
+
+
+}

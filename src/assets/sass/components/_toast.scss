@@ -1,0 +1,27 @@
+// overrides the primevue's toast classes
+.p-toast {
+
+  & .p-toast-message.p-toast-message-success {
+    background: $color-primary-light-1;
+  }
+
+  & .p-toast-message {
+    margin: -1rem 4rem 1rem 0;
+    border-radius: 0.375rem;
+
+    @include respond(xl) {
+      margin: -1rem 1rem 1rem 0;
+    }
+
+    @include respond(lg) {
+      margin: -1rem 0.6rem 1rem 0;
+    }
+
+    @include respond(md) {
+      margin: -1rem 0.75rem 1rem 0;
+    }
+
+
+  }
+
+}

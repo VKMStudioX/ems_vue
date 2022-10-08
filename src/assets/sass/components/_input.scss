@@ -1,0 +1,170 @@
+// classes owerwrites for the prime vue ui's
+
+.p-label {
+  font-size: $default-font-size;
+  color: $color-secondary-text;
+  padding: 1.5rem 0rem;
+  font-style: normal;
+  display: block;
+}
+
+.p-inputgroup {
+  border: 0.125rem solid rgba($color-secondary, 0.2);
+  border-radius: 0.375rem;
+}
+
+.p-inputtext {
+  background: #FFFFFF;
+  border: none;
+  box-sizing: border-box;
+  border-top-right-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+  color: rgba($color-secondary-text, 1);
+  font-family: $default-font-family;
+  font-style: $default-font-style;
+  font-weight: $default-font-weight;
+  font-size: $default-font-size;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+
+  &--no-icons {
+    border: none;
+  }
+
+  &::placeholder {
+    color: rgba($color-secondary, 0.5);
+  }
+
+  &:enabled:hover {
+    border: none;
+  }
+
+  &:enabled:focus, {
+    outline: 0;
+    outline-offset: 0;
+    box-shadow: none;
+    border: none;
+    background: $color-primary-light-3;
+  }
+}
+
+
+.p-inputgroup-addon {
+  background: #FFFFFF;
+  color: rgba($color-secondary, 0.3);
+  border: none;
+  padding: 0.625rem;
+  min-width: 1.473rem;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+}
+
+.p-password {
+  width: 100% !important;
+  border-color: black;
+}
+
+.p-inputgroup {
+  &:hover {
+    border: 0.125rem solid rgba($color-secondary, 0.5);
+  }
+  &:focus-within {
+    background-color: $color-primary-light-3 !important;
+    border: 0.125rem solid rgba($color-secondary, 0.5);
+    & > .p-inputgroup-addon {
+      background-color: $color-primary-light-3 !important;
+    }
+  }
+}
+
+.p-input-icon {
+  color: $color-secondary-light-4;
+  width: 1.188rem;
+  height: 1.188rem;
+}
+
+.p-password-generate {
+    height: 4rem;
+    @include flex(row,flex-end,center);
+    margin: 0.5rem 0rem;
+}
+
+.p-component {
+  font-family: $default-font-family
+}
+
+.p-invalid {
+  border-color: $color-error;
+  color: $color-error;
+  word-wrap: break-word !important;
+  width: 100%;
+  //overflow-x: hidden;
+}
+
+
+// SELECTS & MULTI-SELECTS
+.p-dropdown, .p-multiselect {
+  background: #ffffff;
+  border: none !important;
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.25rem;
+}
+
+.p-dropdown .p-dropdown-trigger,
+.p-multiselect .p-multiselect-trigger,
+.p-multiselect-panel .p-multiselect-header .p-multiselect-close,
+{
+  color: $color-secondary-text;
+}
+
+.p-dropdown .p-dropdown-label.p-placeholder,
+.p-multiselect .p-multiselect-label.p-placeholder
+{
+  color: rgba($color-secondary, 0.5);
+}
+
+.p-dropdown:not(.p-disabled).p-focus,
+.p-multiselect:not(.p-disabled).p-focus {
+  box-shadow: none;
+  background: $color-primary-light-3;
+  border-color: rgba($color-secondary, 0.5) !important;
+}
+
+.p-checkbox .p-checkbox-box {
+  border-color: $color-secondary-text;
+}
+
+.p-checkbox .p-checkbox-box.p-highlight .p-checkbox-icon.pi-check:before {
+  top: 0.5rem;
+  left: 0.188rem;
+}
+
+.p-dropdown-label,
+.p-multiselect .p-multiselect-label{
+  padding: 0.5rem 0.5rem;
+}
+
+.p-selected-option {
+    display: inline-flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    max-height: 1.375rem;
+  }
+
+.p-selected-option-value {
+    padding: 0.125rem 0.5rem;
+    border-radius: 3px;
+    display: inline-flex;
+    margin-right: 0.5rem;
+    background-color: $color-primary;
+    color: $color-white;
+}
+
+.p-multiselect-label:not(.p-placeholder) {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+

@@ -1,53 +1,46 @@
 <template>
-  <div class="p-user-data-form p-m-4">
-    <h4 class="p-text-center p-text-uppercase p-m-4">{{ isEdit ? 'Edit reminder' : 'Create new reminder' }}</h4>
+  <div class="form">
+    <span class="form__header text-inter text-primary heading-tertiary">{{ isEdit ? 'Edit reminder' : 'Create new reminder' }}</span>
 
-    <div class="p-grid p-fluid p-jc-center">
-      <div class="p-col-12 p-md-4">
+    <div class="form__content-1">
+
+<!-- DAYS OF WEEK -->
         <span
           class="p-label"
-          :class="{ 'p-error': v$.selectedDOW.$invalid && submitted }"
+          :class="{ 'p-invalid': v$.selectedDOW.$invalid && submitted }"
           >Days of week</span
         >
-        <div class="p-inputgroup">
+        <div class="p-inputgroup"
+             :class="{ 'p-invalid': v$.selectedDOW.$invalid && submitted }">
           <span class="p-inputgroup-addon">
-            <font-awesome-icon :icon="['fas', 'calendar-week']" />
+             <SvgIcon icon="calendar" class="p-input-icon" />
           </span>
           <MultiSelect
             v-model="v$.selectedDOW.$model"
             :options="daysOfWeek"
-            optionLabel="textOfReminder"
+            optionLabel="name"
             :showClear="false"
-            :class="{
-              'p-invalid': v$.selectedDOW.$invalid && submitted,
-            }"
             class="multiselect-custom"
-            placeholder="Select day(s) of week"
+            placeholder="Select day(s)"
           >
             <template #value="slotProps">
               <div
-                class="selected-option selected-option-value"
+                class="p-selected-option p-selected-option-value"
                 v-for="option of slotProps.value"
                 :key="option"
               >
-                <font-awesome-icon :icon="['fas', 'calendar-day']" class="p-mr-2" />
-                <div>
-                  {{ option }}
-                </div>
+                <span class="text-white text-extra-small">{{ option.name }}</span>
               </div>
               <template v-if="!slotProps.value || slotProps.value.length === 0">
-                Select day(s) of week
+                Select day(s)
               </template>
             </template>
             <template #option="slotProps">
-              <div class="selected-option">
-                <font-awesome-icon :icon="['fas', 'calendar-day']" />
-                <div class="p-ml-2">{{ slotProps.option }}</div>
-              </div>
+              <span class="text-secondary">{{ slotProps.option.name }}</span>
             </template>
           </MultiSelect>
         </div>
-        <small v-if="v$.selectedDOW.$invalid && submitted" class="p-error"
+        <small v-if="v$.selectedDOW.$invalid && submitted" class="p-invalid"
           >{{
             v$.selectedDOW.required.$message.replace(
               "Value",
@@ -55,165 +48,126 @@
             )
           }}.</small
         >
-    </div>
-  </div>
 
-   <div class="p-grid p-fluid p-jc-center">
-      <div class="p-col-12 p-md-4">
+<!-- HOUR -->
        <span
           class="p-label"
-          :class="{ 'p-error': v$.selectedHOR.$invalid && submitted }"
-          >Hour of reminder</span
+          :class="{ 'p-invalid': v$.selectedHOR.$invalid && submitted }"
+       >Hour of reminder</span
         >
-        <div class="p-inputgroup">
+        <div class="p-inputgroup"
+             :class="{ 'p-invalid': v$.selectedHOR.$invalid && submitted }"
+        >
           <span class="p-inputgroup-addon">
-            <font-awesome-icon :icon="['fas', 'user']" />
+            <SvgIcon icon="clock" class="p-input-icon"/>
           </span>
           <Dropdown
             v-model="v$.selectedHOR.$model"
             :options="hourOfReminder"
             optionLabel="name"
-            :filter="true"
+            :filter="false"
             :showClear="true"
-            :class="{ 'p-invalid': v$.selectedHOR.$invalid && submitted }"
-            placeholder="Select hour of reminder"
+            placeholder="Select hour"
           >
             <template #value="slotProps">
               <div
-                class="selected-option selected-option-value"
+                class="p-selected-option p-selected-option-value"
                 v-if="slotProps.value"
               >
-                <font-awesome-icon
-                  :icon="['fas', 'clock']"
-                  class="p-mr-2"
-                />
-                <div>{{ slotProps.value }}</div>
+               <span class="text-white text-extra-small">{{ slotProps.value }}</span>
               </div>
               <span v-else>
                 {{ slotProps.placeholder }}
               </span>
             </template>
             <template #option="slotProps">
-              <div class="selected-option">
-                <font-awesome-icon
-                  :icon="['fas', 'clock']"
-                />
-                <div class="p-ml-2">{{ slotProps.option }}</div>
-              </div>
+                <span class="text-secondary">{{ slotProps.option }}</span>
             </template>
           </Dropdown>
         </div>
-        <small v-if="v$.selectedHOR.$invalid && submitted" class="p-error">{{
+        <small v-if="v$.selectedHOR.$invalid && submitted" class="p-invalid">{{
           v$.selectedHOR.required.$message.replace("Value", "Action")
         }}</small>
-      </div>
-    </div>
 
 
-    <div class="p-grid p-fluid p-jc-center">
-      <div class="p-col-12 p-md-4">
+<!--   TITLE -->
        <span
           class="p-label"
-          :class="{ 'p-error': v$.titleOfReminder.$invalid && submitted }"
+          :class="{ 'p-invalid': v$.titleOfReminder.$invalid && submitted }"
           >Reminder title</span
         >
-        <div class="p-inputgroup">
+        <div class="p-inputgroup"
+             :class="{ 'p-invalid': v$.titleOfReminder.$invalid && submitted }"
+        >
           <span class="p-inputgroup-addon">
-            <font-awesome-icon :icon="['fas', 'heading']" />
+            <SvgIcon icon="text" class="p-input-icon" />
           </span>
           <InputText
             v-model="v$.titleOfReminder.$model"
             minLength="3"
             maxLength="45"
             required
-            placeholder="Type title of reminder"
-            :class="{ 'p-invalid': v$.titleOfReminder.$invalid && submitted }"
+            placeholder="Type title"
             title="Title is required, should be in range of 3 to 45 characters long, &#10;with only small or/and capital letters."
           />
         </div>
-        <small v-if="v$.titleOfReminder.$invalid && submitted" class="p-error">
+        <small v-if="v$.titleOfReminder.$invalid && submitted" class="p-invalid">
           Title is required, should be in range of 3 to 45 characters
           long, with only small or/and capital letters.
         </small>
       </div>
-    </div>
 
-    <div class="p-grid p-fluid p-jc-center">
-      <div class="p-col-12 p-md-4">
+
+    <div class="form__content-2">
+
+<!--       TEXT -->
         <span
           class="p-label"
-          :class="{ 'p-error': v$.textOfReminder.$invalid && submitted }"
+          :class="{ 'p-invalid': v$.textOfReminder.$invalid && submitted }"
           >Text of reminder</span
         >
-        <div class="p-inputgroup">
-          <span
-            class="p-inputgroup-addon"
-          >
-            <font-awesome-icon :icon="['fas', 'envelope']" />
-          </span>
+        <div class="p-inputgroup p-inputgroup--no-icons"
+             :class="{ 'p-invalid': v$.textOfReminder.$invalid && submitted }"
+        >
           <Textarea
             v-model="v$.textOfReminder.$model"
             rows="5" cols="30"
             minLength="3"
             maxLength="255"
             required
-            placeholder="Type text of reminder"
-            :class="{
-              'p-invalid': v$.textOfReminder.$invalid && submitted
-            }"
-            title="textOfReminder is required, should be in range of 3 to 45 characters, with only &#10;small or capital letters, numbers and characters like - _ .  &#10;In addition, must be in format like login@enamor.pl ."
+            placeholder="Type text"
+            class="p-inputtext--no-icons"
+           title="text of reminder is required, should be in range of 3 to 45 characters, with only &#10;small or capital letters, numbers and special characters"
           />
         </div>
-        <small v-if="v$.textOfReminder.$invalid && submitted" class="p-error p-d-block">
-          textOfReminder is required, should be in range of 3 to 255 characters, with only
-          small or capital letters, numbers and characters like "-" "_" ".". In
-          addition, must be in format like "login@enamor.pl" .
+        <small v-if="v$.textOfReminder.$invalid && submitted" class="p-invalid">
+          text field is required, should be in range of 3 to 255 characters, with only
+          small or capital letters, numbers and special characters
         </small>
-      </div>
-    </div>
 
-    <div class="p-grid p-fluid p-jc-center">
-      <div class="p-col-12 p-md-4">
+
+<!--  ACTIVE  -->
         <span
           class="p-label"
-          :class="{ 'p-error': v$.activeReminder.$invalid && submitted }"
+          :class="{ 'p-invalid': v$.activeReminder.$invalid && submitted }"
           >is Active ?</span
         >
-        <div class="p-inputgroup">
-          <span class="p-inputgroup-addon">
-            <font-awesome-icon :icon="['fas', 'lock']" />
-          </span>
-          <ToggleButton
-            v-model="v$.activeReminder.$model"
-            onLabel="Reminder is Active"
-            offLabel="Reminder is not Active"
-            onIcon="pi pi-check"
-            offIcon="pi pi-times"
-            class="p-auth-button"
-            :class="{ 'p-invalid': v$.activeReminder.$invalid && submitted }"
-            title="activeReminder? is required (Admin or Not admin)."
-          />
-        </div>
-        <small v-if="v$.activeReminder.$invalid && submitted" class="p-error"
-          >{{
-            v$.activeReminder.required.$message.replace("Value", "Authorization")
-          }}.</small
-        >
+      <Switch
+        v-model="v$.activeReminder.$model"
+        />
+  </div>
+
+    <div class="form__footer">
+      <div class="form__footer--button">
+      <Button
+          class="button button--secondary"
+          type="submit"
+      >
+        <span class="text-inter text-small">Confirm</span>
+      </Button>
       </div>
     </div>
 
-    <div class="p-grid p-fluid p-jc-center p-mt-2">
-      <div class="p-col-12 p-md-4">
-        <Button
-          label="Confirm"
-          icon="pi pi-check"
-          iconPos="right"
-          class="p-button-success"
-          :class="1400 > windowWidth ? 'p-button-sm' : ''"
-          type="submit"
-        />
-      </div>
-    </div>
   </div>
 </template>
 
@@ -231,9 +185,12 @@ import {
   validationRegExName,
 } from "../../functions/utils";
 import { useWindowSize } from "vue-window-size";
+import SvgIcon from "@/components/commons/SvgIcon";
+import Switch from "@/components/commons/Switch";
 
 export default {
   name: "EmcUserDataForm",
+  components: {Switch, SvgIcon},
   props: {
     submitted: {
       type: Boolean,
@@ -251,26 +208,62 @@ export default {
     const store = useStore();
     const { width, height } = useWindowSize();
 
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    const daysOfWeek = [
+      {
+        id: 1,
+        name: "Sunday",
+        shortName: "Sun",
+      },
+      {
+        id: 2,
+        name: "Monday",
+        shortName: "Mon",
+      },
+      {
+        id: 3,
+        name: "Tuesday",
+        shortName: "Tue",
+      },
+      {
+        id: 4,
+        name: "Wednesday",
+        shortName: "Wed",
+      },
+      {
+        id: 5,
+        name: "Thursday",
+        shortName: "Thu",
+      },
+      {
+        id: 6,
+        name: "Friday",
+        shortName: "Fri",
+      },
+      {
+        id: 7,
+        name: "Saturday",
+        shortName: "Sat",
+      }
+    ]
 
     const hourOfReminder = [
         '8:00', '8:30', '9:00', '9:30', '10:00',
         '10:30', '11:00', '11:30', '12:00', '12:30',
         '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00' ]
 
-    const errorMsg = computed(() => store.getters["admin/apiErrorMsg"]);
+    const errorMsg = computed(() => store.getters["reminder/apiErrorMsg"]);
 
     // USER DATA
-    const reminderData = computed(() => store.getters["admin/reminderData"]);
+    const reminderData = computed(() => store.getters["reminder/reminderData"]);
 
     const state = reactive({
       selectedDOW: props.isEdit
       ? reminderData.value && reminderData.value.days_of_week.split(',')
       : null,
-      selectedHOR: reminderData.value && reminderData.value.hour_of_reminder,
-      titleOfReminder: reminderData.value && reminderData.value.title_of_reminder,
-      activeReminder: reminderData.value && reminderData.value.active_reminder,
-      textOfReminder: reminderData.value && reminderData.value.text_of_reminder,
+      selectedHOR: reminderData.value && reminderData.value.hour,
+      titleOfReminder: reminderData.value && reminderData.value.title,
+      activeReminder: reminderData.value ? reminderData.value.active : false,
+      textOfReminder: reminderData.value && reminderData.value.text,
     });
 
     const rules = {

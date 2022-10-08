@@ -1,0 +1,208 @@
+.app-layout {
+  display: grid;
+  grid: 1fr / 16.188rem 1fr;
+  min-height: 100vh;
+  height: 100%;
+
+  @include respond(md) {
+    grid: 1fr / 1fr;
+  }
+
+  &__sidebar {
+    grid-column: 1 / 2;
+    position: fixed;
+
+    @include respond(md) {
+      display: none;
+    }
+
+  }
+
+  &__main {
+    grid-column: 2 / 3;
+    background-color: $color-gray-light-3;
+    overflow-y: auto;
+    min-height: 100vh;
+    height: 100%;
+
+    @include respond(md) {
+      grid-column: 1 / 2;
+      overflow-y: hidden;
+    }
+
+  }
+
+  &__wrapper {
+    height: 100%;
+
+    @include respond(md) {
+      margin-top: 3rem;
+    }
+  }
+}
+
+.responsive-menu {
+  @include flex(row, space-between, center);
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  padding: 1rem;
+  width: 100%;
+  background: $color-white;
+
+  &__icon {
+    width: 2rem;
+    height: 2rem;
+    color: $color-primary;
+    transform: rotate(180deg);
+  }
+
+  &__logo {
+    width: 2rem;
+    height: 1.5rem;
+  }
+
+}
+
+.dashboard {
+  display: grid;
+  grid: 1fr 1fr 30rem 1fr 21.5rem 1fr / 1fr 90% 1fr;
+
+  @include respond(lg) {
+    grid: 3.125rem 6.25rem 40rem 3rem 24.5rem 3rem / 1fr 90% 1fr;
+  }
+
+  @include respond(md) {
+    margin-top: 3rem;
+  }
+
+  @-moz-document url-prefix() {
+    @include respond(md) {
+      margin-top: 6rem;
+    }
+  }
+
+  &__header {
+    grid-area: 2 / 2 / 3 / 3;
+  }
+
+  &__calendar-container {
+    grid-area: 3 / 2 / 4 / 3;
+    height: 100%;
+    padding: 0.625rem;
+    border-radius: 0.75rem;
+    background: $color-white;
+    box-shadow: 0rem 0.75rem 2rem rgba($color-shadow, 0.06);
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  &__reminder-container {
+    grid-area: 5 / 2 / 6 / 3;
+    height: 100%;
+    padding: 1.5rem 2rem;
+    border-radius: 0.75rem;
+    background: $color-white;
+    box-shadow: 0rem 0.75rem 2rem rgba($color-shadow, 0.06);
+  }
+}
+
+
+.main {
+  display: grid;
+  grid: 1fr 1fr 45rem 1fr / 1fr 90% 1fr;
+  min-height: 100vh;
+  height: 100%;
+  overflow-y: hidden;
+
+  @include respond(81.25rem) {
+    grid: 1fr 1fr max-content 1fr / 1fr 90% 1fr;
+    height: 100%;
+  }
+
+  @include respond(md) {
+    grid: 3.125rem 6.25rem max-content 3rem / 1fr 90% 1fr;
+  }
+
+  &__header {
+    grid-area: 2 / 2 / 3 / 3;
+  }
+
+  &__container {
+    grid-area: 3 / 2 / 4 / 3;
+    overflow-y: hidden;
+  }
+
+  &__calendar-manage-container {
+    grid-area: 3 / 2 / 4 / 3;
+  }
+
+}
+
+.form {
+  display: grid;
+  grid: 10% 70% 20% / 1fr 26.625rem 1fr 26.625rem 1fr;
+  height: 43.063rem;
+  background: $color-white;
+  box-shadow: 0rem 0.75rem 2rem rgba($color-shadow, 0.06);
+
+  @include respond(81.25rem) {
+    grid: max-content / 10% 80% 10%;
+    //max-height: 68.75rem;
+    height: 100%;
+  }
+
+  @include respond(md) {
+    margin-top: 1rem;
+  }
+
+  &__header {
+  grid-area: 1 / 1 / 2 / 6;
+  padding: 2rem;
+
+    @include respond(81.25rem) {
+      grid-area: 1 / 2 / 2 / 3;
+      padding: 2rem 1rem;
+    }
+
+  }
+
+  &__content-1 {
+    grid-area: 2 / 2 / 3 / 3;
+    padding: 1rem;
+
+    @include respond(81.25rem) {
+      padding-top: 0rem;
+    }
+  }
+
+  &__content-2 {
+    grid-area: 2 / 4 / 3 / 5;
+    position: relative;
+    padding: 1rem;
+
+    @include respond(81.25rem) {
+      grid-area: 3 / 2 / 4 / 3;
+      padding-top: 0rem;
+    }
+  }
+
+  &__footer {
+    grid-area: 3 / 4 / 4 / 5;
+    @include flex(row, flex-end, flex-start);
+    height: 5rem;
+
+    @include respond(81.25rem) {
+      grid-area: 4 / 2 / 5 / 3;
+    }
+
+    &--button {
+      width: 7.375rem;
+      height: 2.563rem;
+      padding: 0.5rem;
+    }
+  }
+}
+
+
+

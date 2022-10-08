@@ -2,9 +2,10 @@
   <DataTable
     :value="reminders"
     :paginator="true"
-    class="p-datatable-Reminders p-Reminders-table p-py-4"
+    class="table"
     :class="1400 > windowWidth ? 'p-datatable-sm' : ''"
-    :rows="12"
+    :rows="isManage ? 6 : 3"
+    :rowClass="rowClass"
     dataKey="id"
     :rowHover="true"
     v-model:selection="selectedReminders"
@@ -12,40 +13,30 @@
     filterDisplay="menu"
     :loading="loading"
     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    currentPageReportTemplate="{first} - {last} of {totalRecords}"
     :globalFilterFields="['id', 'email', 'is_admin']"
     :scrollable="true"
     scrollHeight="flex"
+    responsiveLayout="scroll"
+    headerStyle="border:none"
+
   >
     <template #header>
-      <div class="p-d-flex p-jc-between p-ai-center">
-        <div><h3 class="p-m-0">EMS Reminders list</h3></div>
-          <div v-if="isManage">
-            <Button
-            label="Add new Reminder"
-            icon="pi pi-Reminder-plus"
-            iconPos="left"
-            class="p-button-info"
-            :class="1400 > windowWidth ? 'p-button-sm' : ''"
-            type="button"
-            @click="handleAddNewReminder()"
-          />
-          </div>
-      </div>
+        <span class="text-inter text-primary heading-tertiary">Reminders list</span>
     </template>
-    <template #empty> No Reminders found. </template>
-    <template #loading> Loading Reminders data. Please wait. </template>
+    <template #empty> <span class="text-secondary">No Reminders found. </span> </template>
+    <template #loading> <span class="text-secondary"> Loading Reminders data. Please wait. </span> </template>
     <Column
       field="id"
       header="ID"
       headerClass="p-column-header"
+      class="text-secondary text-small text-inter"
       sortable
       style="
-        max-width: 5%;
-        max-width: 5%;
         display: flex;
-        flex: 1 1 10%;
+        flex: 0 0 10%;
         justify-content: flex-start;
+        align-items: center;
       "
     >
       <template #body="{ data }">
@@ -53,142 +44,123 @@
       </template>
     </Column>
     <Column
-      field="dats_of_week"
-      header="Days Of Week"
-      headerClass="p-column-header"
+      field="days"
+      header="Days"
+      class="text-secondary text-small text-inter"
+      :class="isColumnExtended ? 'table__column--extended' : 'table__column--collapsed'"
+      :headerClass="isColumnExtended ? ' p-column-header table__column--extended' : 'p-column-header table__column--collapsed'"
       sortable
       :filterMenuStyle="{ width: '5rem' }"
-      style="
-        min-width: 20%;
-        max-width: 20%;
-        display: flex;
-        flex: 1 1 20%;
-        justify-content: flex-start;
-      "
     >
       <template #body="{ data }">
-        <div
-          :class="
-            data.days_of_week && data.days_of_week.length >= 20
-              ? 'p-overflow'
-              : 'p-white-space-no-wrap'
-          "
-          v-tooltip.top="
-            data.days_of_week && data.days_of_week.length >= 20 ? data.days_of_week : ''
-          "
+        <span
+            v-for="(day, index) in data.days"
+            :key="day"
+            @click="toggleExtendColumn()"
         >
-          {{ data.days_of_week }}
-        </div>
+        {{ getDayById(day) }}{{ data.days.length > 1 && data.days.length -1 > index  ? ',&nbsp;' : ''}}
+        </span>
       </template>
     </Column>
      <Column
-      field="hour_of_reminder"
+      field="hour"
       header="Hour"
       headerClass="p-column-header"
+      class="text-secondary text-small text-inter"
       sortable
       :filterMenuStyle="{ width: '5rem' }"
       style="
-        min-width: 20%;
-        max-width: 20%;
         display: flex;
-        flex: 1 1 20%;
-        justify-content: flex-start;
+        flex: 0 0 10%;
+        justify-content: center;
+        align-items: center;
       "
     >
       <template #body="{ data }">
-        {{ data.hour_of_reminder }}
+        {{ data.hour }}
       </template>
     </Column>
      <Column
-      field="title_of_reminder"
+      field="title"
       header="Title"
       headerClass="p-column-header"
+      class="text-secondary text-small text-inter"
       sortable
       :filterMenuStyle="{ width: '5rem' }"
       style="
-        min-width: 20%;
-        max-width: 20%;
         display: flex;
         flex: 1 1 20%;
         justify-content: flex-start;
+        align-items: center;
+        word-wrap: break-word;
       "
     >
       <template #body="{ data }">
-        <div
-          :class="
-            data.title_of_reminder && data.title_of_reminder.length >= 20
-              ? 'p-overflow'
-              : 'p-white-space-no-wrap'
-          "
-          v-tooltip.top="
-            data.title_of_reminder && data.title_of_reminder.length >= 20 ? data.title_of_reminder : ''
-          "
-        >
-          {{ data.title_of_reminder }}
-        </div>
+          {{ data.title }}
       </template>
     </Column>
     <Column
-      field="active_reminder"
+      field="active"
       sortable
+      header="Active?"
       headerClass="p-column-header p-default-cursor"
+      class="text-secondary text-small text-inter"
       :showFilterMatchModes="false"
       style="
-        max-width: 15%;
         display: flex;
         flex: 1 1 15%;
         justify-content: center;
       "
     >
-      <template #header>
-        {{ 1400 > windowWidth ? "is Active ?" : "is Active ?" }}
-      </template>
       <template #body="{ data }">
         <div
           class="p-d-flex p-jc-center p-ai-center"
-          v-tooltip.top="data.active_reminder ? 'Reminder is active' : 'Reminder is not active'"
+          v-tooltip.top="data.active ? 'Reminder is active' : 'Reminder is not active'"
         >
-          <font-awesome-icon
-            :icon="['far', 'check-square']"
-            v-if="data.active_reminder"
-          />
-          <font-awesome-icon :icon="['far', 'square']" v-if="!data.active_reminder" />
+
+          <div class="checkbox">
+            <SvgIcon
+                :icon="data.active ? 'checkmark' : 'close'"
+                :class="data.active ? 'checkbox--checkmark' : 'checkbox--close'"
+            />
+             </div>
         </div>
       </template>
     </Column>
-    <Column
+    <Column v-if="isAdmin"
       field="actions"
       :showFilterMatchModes="false"
       headerClass="p-column-header p-default-cursor"
+      class="text-secondary text-small text-inter"
       style="
-        min-width: 15%;
-        max-width: 15%;
         display: flex;
         flex: 1 1 15%;
         justify-content: center;
       "
     >
-      <template #header>
-        <div class="p-table-center-flex">Actions</div>
-      </template>
+      <template #header></template>
       <template #body="{ data }">
-        <div class="p-d-flex p-jc-between" v-if="isManage">
+        <div class="p-d-flex p-jc-between" v-if="isAdmin">
           <div v-tooltip.top="'Delete Reminder'" class="p-mr-4"  @click="handleDeleteReminder($event, data.id)">
-            <font-awesome-icon
-              :icon="['fas', 'user-minus']"
-              class="p-cursor-pointer p-color-remove"
-            />
+            <SvgIcon icon="delete" class="table__icon" />
           </div>
-          <div v-tooltip.top="'Edit Reminder'">
-            <font-awesome-icon
-              :icon="['fas', 'user-edit']"
-              class="p-cursor-pointer p-color-edit"
-              @click="handleEditReminder(data.id)"
-            />
+          <div v-tooltip.top="'Edit Reminder'" @click="handleEditReminder(data.id)">
+            <SvgIcon icon="edit" class="table__icon" />
           </div>
         </div>
       </template>
     </Column>
+    <template #footer v-if="isManage">
+      <div class="table__footer">
+      <Button
+        type="button"
+        class="button button--secondary"
+        @click="handleAddNewReminder()"
+    >
+        <span class="text-small text-inter">Add new reminder</span>
+      </Button>
+      </div>
+    </template>
   </DataTable>
 </template>
 
@@ -197,6 +169,7 @@ import { useWindowSize } from "vue-window-size";
 import { FilterMatchMode } from "primevue/api";
 import { useConfirm } from "primevue/useconfirm";
 import { ref } from "vue";
+import { rowClass } from "@/functions/utils";
 
 export default {
   name: "RemindersTable.vue",
@@ -209,6 +182,11 @@ export default {
       type: Boolean,
       required: true,
       default: true,
+    },
+    isAdmin: {
+      type: Boolean,
+      required: true,
+      default: false
     },
     isManage: {
       type: Boolean,
@@ -247,7 +225,43 @@ export default {
             });
         }
 
+    const getDayById = (dayId) => {
+      let name = "";
+
+      switch (dayId) {
+        case 1:
+          name = "Sun";
+          break;
+        case 2:
+          name = "Mon";
+          break;
+        case 3:
+          name = "Tue";
+          break;
+        case 4:
+          name = "Wed"
+          break;
+        case 5:
+          name = "Thu";
+          break;
+        case 6:
+          name = "Fri";
+          break;
+        case 7:
+          name = "Sat";
+          break;
+      }
+
+      return name;
+    };
+
+    const isColumnExtended = ref (false);
+    const toggleExtendColumn = () => {
+      isColumnExtended.value = !isColumnExtended.value;
+    }
+
     return {
+      rowClass,
       filters,
       selectedReminders,
       handleEditReminder,
@@ -255,10 +269,14 @@ export default {
       handleDeleteReminder,
       windowWidth: width,
       windowHeight: height,
+      getDayById,
+      toggleExtendColumn,
+      isColumnExtended
     };
   },
   emits: ["deleteReminder", "editReminder", "newReminder"],
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

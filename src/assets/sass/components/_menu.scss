@@ -1,0 +1,42 @@
+.menu {
+
+  &__link {
+    @include flex(row,flex-start,center);
+    color: $color-secondary-text;
+    font-size: 1.125rem;
+    text-decoration: none;
+    padding-bottom: 1.563rem;
+
+    &:hover {
+      color: $color-secondary-light-2;
+    }
+
+    &--active {
+      color: $color-secondary;
+    }
+
+    &--category-active {
+       color: rgba($color-secondary, .8);
+     }
+
+    &--header {
+      cursor: default;
+      pointer-events: none;
+    }
+
+  }
+
+  &__icon {
+    height: 1.125rem;
+    width: 1.125rem;
+    margin-right: 0.625rem;
+  }
+
+  &--subcategory {
+    padding-left: 2.5rem;
+
+  }
+
+
+
+}

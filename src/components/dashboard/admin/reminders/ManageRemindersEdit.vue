@@ -1,9 +1,19 @@
 <template>
-  <div>
+  <div class="app-layout__wrapper">
     <div v-if="loading">
             <Loader />
         </div>
-        <div v-else>
+    <div v-else class="main">
+      <Header
+          class="main__header"
+          title="Reminders"
+          navTitle1="Manage"
+          navTitle2="Reminders"
+          navTitle3="Edit Reminder"
+          navLink2="/manage-reminders"
+          :navLink3="`${actualPath}?id=${id}`"
+      />
+      <div class="main__container">
     <form
       @submit.prevent="handleSubmit(!validate.$invalid)"
       @invalid.capture.prevent="handleInvalid()"
@@ -15,6 +25,7 @@
         :isEdit="true"
       />
     </form>
+      </div>
     </div>
   </div>
 </template>
@@ -26,52 +37,38 @@ import { useToast } from "primevue/usetoast";
 import { useRouter, useRoute } from "vue-router";
 import { createToast } from "@/functions/utils";
 import ReminderForm from "@/components/forms/ReminderForm";
+import Header from "@/components/commons/Header";
 
 export default {
   name: "ManageRemindersEdit",
-  components: { ReminderForm },
+  components: { ReminderForm, Header },
   setup() {
     const toast = useToast();
     const store = useStore();
     const router = useRouter();
     const route = useRoute();
     const id = route.query.id;
+    const actualPath = computed(() => {
+      return route.path;
+    });
 
     const loading = ref(true);
     onMounted(async () => {
-      await store.dispatch("admin/getAllReminders").then(
+      console.log(id)
+      await store.dispatch("reminder/getReminderById", id).then(
         () => {
-          store.commit("admin/getReminderById", id);
           loading.value = false;
         },
         (error) => console.error(error)
       );
     });
 
-    const errorMsg = computed(() => store.getters["admin/apiErrorMsg"]);
-
-    // REMINDER DATA FROM STORE
-    const reminderData = computed(() => store.getters["admin/reminderData"]);
-    const isDOWChanged = ref(false)
-    const isHORChanged = ref(false)
-    const isTitleChanged = ref(false)
-    const isTextChanged = ref(false)
-    const isActiveChanged = ref(false)
+    const errorMsg = computed(() => store.getters["reminder/apiErrorMsg"]);
 
     // reminderDATA & FORM VALIDATION
     const reminderState = reactive({});
     const handleChangeState = ($event) => {
       reminderState.target = $event;
-      isDOWChanged.value =
-        reminderState.target.selectedDOW.toString() !== reminderData.value.days_of_week;
-      isHORChanged.value =
-        reminderState.target.selectedHOR !== reminderData.value.hour_of_reminder;
-      isTitleChanged.value =
-        reminderState.target.titleOfReminder !== reminderData.value.title_of_reminder;
-      isTextChanged.value =
-        reminderState.target.texteOfReminder !== reminderData.value.text_of_reminder;
-      isActiveChanged.value =
-        reminderState.target.activeReminder !== reminderData.value.active_reminder;        
     };
 
     const validate = ref({});
@@ -88,36 +85,16 @@ export default {
         //FORMING THE VOID (REQUEST)
 
         const editReminderData =  {
-              id: id && Number(id),
-              ...(isDOWChanged.value && {
-                days_of_week:
-                  reminderState && reminderState.target.selectedDOW.toString(),
-              }),
-              ...(isHORChanged.value && {
-                hour_of_reminder:
-                  reminderState && reminderState.target.selectedHOR,
-              }),
-              ...(isTitleChanged.value && {
-                title_of_reminder:
-                  reminderState && reminderState.target.titleOfReminder,
-              }),
-              ...(isTextChanged.value && {
-                text_of_reminder:
-                  reminderState && reminderState.target.textOfReminder,
-              }),
-              ...(isActiveChanged.value && {
-                active_reminder:
-                  reminderState && reminderState.target.activeReminder === true ? 1 : 0,
-              }),
+          id: id && Number(id),
+          days_of_week: reminderState && reminderState.target.selectedDOW.toString(),
+          hour: reminderState && reminderState.target.selectedHOR,
+          title: reminderState && reminderState.target.titleOfReminder,
+          text: reminderState && reminderState.target.textOfReminder,
+          active: reminderState && reminderState.target.activeReminder,
             }
 
-        editReminderData.hasOwnProperty("days_of_week")      ||
-        editReminderData.hasOwnProperty("hour_of_reminder") ||
-        editReminderData.hasOwnProperty("title_of_reminder")  ||
-        editReminderData.hasOwnProperty("text_of_reminder")  ||
-        editReminderData.hasOwnProperty("active_reminder")  
-          ? store
-              .dispatch("admin/updateReminder", editReminderData)
+         store
+              .dispatch("reminder/updateReminder", editReminderData)
               .then(
                 (res) => {
                   createToast(
@@ -128,7 +105,7 @@ export default {
                     5000
                   );
                   router.push({
-                    path: "/dashboard/manage-reminders",
+                    path: "/manage-reminders",
                   });
                 },
                 (error) => {
@@ -137,14 +114,7 @@ export default {
               )
               .catch(() =>
                 createToast(toast, "error", "Error!", `${errorMsg.value}`, 5000)
-              )
-          : createToast(
-              toast,
-              "warn",
-              "Warning!",
-              "Nothing was changed, reminder not edited",
-              5000
-            );
+              );
       } else {
         createToast(
           toast,
@@ -171,6 +141,8 @@ export default {
       handleSubmit,
 
       handleInvalid,
+
+      actualPath
     };
   },
 };

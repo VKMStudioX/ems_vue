@@ -1,122 +1,163 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {createRouter, createWebHistory} from "vue-router";
 import Auth from "@/views/Auth.vue";
 
-const Dashboard = () => import("@/views/Dashboard.vue");
-const DashboardEvents = () => import("@/components/dashboard/Events.vue");
+const NotFound = () => import("@/components/commons/errors/NotFound.vue");
+const Forbidden = () => import("@/components/commons/errors/Forbidden.vue");
 
-const UserAbsences = () => import("@/components/dashboard/user/Absences.vue");
+
+const Dashboard = () => import("@/components/dashboard/Dashboard.vue");
+
+const ManageAbsences = () => import("@/components/dashboard/user/ManageAbsences.vue");
 
 const ManageReminders = () => import("@/components/dashboard/admin/reminders/ManageReminders.vue");
 const ManageRemindersNew = () => import("@/components/dashboard/admin/reminders/ManageRemindersNew.vue")
 const ManageRemindersEdit = () => import("@/components/dashboard/admin/reminders/ManageRemindersEdit.vue")
 
-const ManageHolidays = () => import("@/components/dashboard/admin/ManageHolidays.vue");
+const ManageHolidays = () => import("@/components/dashboard/admin/holidays/ManageHolidays.vue");
 
 const ManageUsers = () => import("@/components/dashboard/admin/users/ManageUsers.vue");
 const ManageUserNew = () => import("@/components/dashboard/admin/users/ManageUsersNew.vue")
 const ManageUserEdit = () => import("@/components/dashboard/admin/users/ManageUsersEdit.vue")
 
-const ManageProjects = () => import("@/components/dashboard/admin/projects/ManageProjects.vue");
-const ManageProjectNew = () => import("@/components/dashboard/admin/projects/ManageProjectsNew.vue")
-const ManageProjectEdit = () => import("@/components/dashboard/admin/projects/ManageProjectsEdit.vue")
-const ViewProjects = () => import("@/components/dashboard/user/ViewProjects.vue");
-const ViewProject = () => import("@/components/dashboard/user/ViewProject.vue");
 
 const routes = [
-  { path: "/:pathMatch(.*)*", component: Auth },
-  {
-    path: "/login",
-    alias: "/",
-    name: "login",
-    component: Auth,
-  },
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    component: Dashboard,
-    children: [
-      {
-        path: "/dashboard/",
-        component:DashboardEvents,
-      },
-      {
-        path: "/dashboard/absences",
-        component: UserAbsences,
-      },
-      {
-        path: "/dashboard/manage-reminders",
+    {path: "/:pathMatch(.*)*", component: NotFound, meta: {layout: 'AppLayout'}},
+    {path: "/forbidden", name: "forbidden", component: Forbidden, meta: {layout: 'AppLayout', requiresAuth: true}},
+    {
+        path: "/login",
+        alias: "/",
+        name: "login",
+        component: Auth,
+        meta: {
+            layout: 'LoginLayout',
+            guest: true,
+        }
+    },
+    {
+        path: "/dashboard",
+        name: "Dashboard",
+        component: Dashboard,
+        meta: {
+            layout: 'AppLayout',
+            requiresAuth: true
+        }
+    },
+    {
+        path: "/manage-absences",
+        component: ManageAbsences,
+        meta: {
+            layout: 'AppLayout',
+            requiresAuth: true,
+            is_admin: false
+        }
+    },
+    {
+        path: "/manage-reminders",
         component: ManageReminders,
-      },
-      {
-        path: "/dashboard/new-reminder",
+        meta: {
+            layout: 'AppLayout',
+            requiresAuth: true,
+            is_admin : true
+        }
+    },
+    {
+        path: "/new-reminder",
         component: ManageRemindersNew,
         props: false,
-      },
-      {
-        path: `/dashboard/edit-reminder`,
+        meta: {
+            layout: 'AppLayout',
+            requiresAuth: true,
+            is_admin : true
+        }
+    },
+    {
+        path: `/edit-reminder`,
         component: ManageRemindersEdit,
-        props: (route) => ({ query: route.query.id }),
-      },
-       
-      {
-        path: "/dashboard/manage-holidays",
+        props: (route) => ({query: route.query.id}),
+        meta: {
+            layout: 'AppLayout',
+            requiresAuth: true,
+            is_admin : true
+        }
+    },
+
+    {
+        path: "/manage-holidays",
         component: ManageHolidays,
-      },
-      
-      {
-        path: "/dashboard/manage-users",
+        meta: {
+            layout: 'AppLayout',
+            requiresAuth: true,
+            is_admin : true
+        }
+    },
+
+    {
+        path: "/manage-users",
         component: ManageUsers,
-      },
-      {
-        path: "/dashboard/new-user",
+        meta: {
+            layout: 'AppLayout',
+            requiresAuth: true,
+            is_admin : true
+        }
+    },
+    {
+        path: "/new-user",
         component: ManageUserNew,
         props: false,
-      },
-      {
-        path: `/dashboard/edit-user`,
+        meta: {
+            layout: 'AppLayout',
+            requiresAuth: true,
+            is_admin : true
+        }
+    },
+    {
+        path: `/edit-user`,
         component: ManageUserEdit,
-        props: (route) => ({ query: route.query.id }),
-      },
-
-      {
-        path: "/dashboard/manage-projects",
-        component: ManageProjects,
-      },
-      {
-        path: "/dashboard/new-project",
-        component: ManageProjectNew,
-        props: false,
-      },
-      {
-        path: `/dashboard/edit-project`,
-        component: ManageProjectEdit,
-        props: (route) => ({ query: route.query.id }),
-      },
-
-      {
-        path: "/dashboard/view-projects",
-        component: ViewProjects,
-      },
-      {
-        path: `/dashboard/view-project`,
-        component: ViewProject,
-        props: (route) => ({ query: route.query.id }),
-      },
-    ]
-  },
-
+        props: (route) => ({query: route.query.id}),
+        meta: {
+            layout: 'AppLayout',
+            requiresAuth: true,
+            is_admin : true
+        }
+    }
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes,
+    history: createWebHistory(process.env.BASE_URL),
+    routes,
 });
 
 router.beforeEach((to, from, next) => {
-  const loggedIn = JSON.parse(localStorage.getItem("userInfo"));
-  if ((to.name !== "login" && !loggedIn) || (to.name === "" && !loggedIn))
-    next({ name: "login" });
-  else next();
-});
+    let user = JSON.parse(localStorage.getItem('userInfo'))
+    let userIsAdmin = user && user.user.is_admin
+
+    if (!to.matched.some(record => record.meta.requiresAuth) &&
+        !to.matched.some(record => record.meta.is_admin) &&
+        to.matched.some(record => record.meta.guest)
+    ) {
+            next()
+    }
+
+    if (to.matched.some(record => record.meta.requiresAuth) &&
+        !to.matched.some(record => record.meta.is_admin) &&
+        !to.matched.some(record => record.meta.guest)
+    ) {
+        if (user !== null) {
+            next()
+        }
+    }
+
+    if (to.matched.some(record => record.meta.requiresAuth) &&
+        to.matched.some(record => record.meta.is_admin) &&
+        !to.matched.some(record => record.meta.guest)
+    ) {
+        if (user !== null && userIsAdmin == true) {
+            next()
+        } else {
+            next({ name: 'forbidden'})
+        }
+    }
+
+})
 
 export default router;

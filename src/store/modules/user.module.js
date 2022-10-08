@@ -3,10 +3,7 @@ import dayjs from "dayjs";
 
 const userInitialState = {
     userEvents: {
-      reminders: [],
-      remindersBG: [],
       absences: [],
-      absencesBG: [],
     },
     userAbsences: [],
     userAbsencesFromAPI: [],
@@ -74,14 +71,14 @@ export const user = {
   },
   mutations: {
     getUserEventsSuccess(state, userEvents) {
-      userEvents.data.user_absences_BG.forEach((v) => {
+      userEvents.data.data.forEach((v) => {
         v.start = dayjs(v.start).format('YYYY-MM-DD')
-        v.backgroundColor = v.defaults.backgroundColor,
-        v.className = v.defaults.className,
-        v.display = v.defaults.display
+        v.backgroundColor = '#6FD3BA',
+        v.className = 'absence'
+        v.display = 'background'
+        v.textColor = '#fff'
       })
-      state.userEvents.reminders = userEvents.data.user_reminders
-      state.userEvents.absencesBG = userEvents.data.user_absences_BG
+      state.userEvents.absencesBG = userEvents.data.data
 
     },
     getUserEventsFailure(state) {
@@ -89,10 +86,10 @@ export const user = {
     },
 
     getUserAbsencesSuccess(state, userAbsences) {
-      state.userAbsences = userAbsences.data.user_absences;
+      state.userAbsences = userAbsences.data.data;
     },
     getUserAbsencesFailure(state) {
-    state.userAbsences = absencesData;
+    state.userAbsences = null;
     },
 
     manageUserAbsencesSuccess(state, userAbsencesFromAPI) {

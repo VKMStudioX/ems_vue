@@ -2,115 +2,61 @@ import axios from "axios";
 import authHeader from "./auth-header";
 
 class AdminService {
+
+    //USERS
     getAllUsersEvents() {
-        return axios.get(`${process.env.VUE_APP_ADMIN_API}/get_all_users_events`, {
+        return axios.get(`${process.env.VUE_APP_ADMIN_API}/users/events`, {
             headers: authHeader(),
         });
     }
 
     getAllUsers() {
-        return axios.get(`${process.env.VUE_APP_ADMIN_API}/get_all_users`, {
+        return axios.get(`${process.env.VUE_APP_ADMIN_API}/users`, {
+            headers: authHeader(),
+        });
+    }
+
+    getUserById(id) {
+        return axios.get(`${process.env.VUE_APP_ADMIN_API}/users/${id}`, {
             headers: authHeader(),
         });
     }
 
     registerUser(newUserData) {
         return axios.post(
-            `${process.env.VUE_APP_ADMIN_API}/register_user`, {...newUserData }, { headers: authHeader() }
+            `${process.env.VUE_APP_ADMIN_API}/users/register`, {...newUserData }, { headers: authHeader() }
         );
     }
 
     updateUser(editUserData) {
         return axios.put(
-            `${process.env.VUE_APP_ADMIN_API}/update_user`, {...editUserData }, { headers: authHeader() }
+            `${process.env.VUE_APP_ADMIN_API}/users/update/${editUserData.id}`, {...editUserData }, { headers: authHeader() }
         );
     }
 
     deleteUser(id) {
-        return axios.put(
-            `${process.env.VUE_APP_ADMIN_API}/delete_user?id=${id}`, {}, {
+        return axios.delete(
+            `${process.env.VUE_APP_ADMIN_API}/users/delete/${id}`, {
                 headers: authHeader(),
             }
         );
     }
 
-    getAllReminders() {
-        return axios.get(`${process.env.VUE_APP_ADMIN_API}/get_all_reminders`, {
-            headers: authHeader(),
-        });
-    }
-    newReminder(newReminderData) {
-        return axios.post(
-            `${process.env.VUE_APP_ADMIN_API}/new_reminder`, {...newReminderData }, { headers: authHeader() }
-        );
-    }
 
-    updateReminder(editReminderData) {
-        return axios.put(
-            `${process.env.VUE_APP_ADMIN_API}/update_reminder`, {...editReminderData }, { headers: authHeader() }
-        );
-    }
-
-    deleteReminder(id) {
-        return axios.put(
-            `${process.env.VUE_APP_ADMIN_API}/delete_reminder?id=${id}`, {}, {
-                headers: authHeader(),
-            }
-        );
-    }
-
+    // HOLDIAYS
     getHolidays() {
-        return axios.get(`${process.env.VUE_APP_ADMIN_API}/get_holidays`, {
+        return axios.get(`${process.env.VUE_APP_ADMIN_API}/holidays`, {
             headers: authHeader(),
         });
     }
 
     manageHolidays(holidaysData) {
         return axios.post(
-            `${process.env.VUE_APP_ADMIN_API}/manage_holidays`, {
+            `${process.env.VUE_APP_ADMIN_API}/holidays/manage`, {
                 ...holidaysData
             }, { headers: authHeader() }
         );
     }
-
-    getAllProjects() {
-        return axios.get(`${process.env.VUE_APP_ADMIN_API}/get_all_projects`, {
-            headers: authHeader(),
-        });
-    }
-
-    newProject(newProjectData) {
-        return axios.post(
-            `${process.env.VUE_APP_ADMIN_API}/new_project`, {...newProjectData }, { headers: authHeader() }
-        );
-    }
-
-    updateProject(editProjectData) {
-        return axios.put(
-            `${process.env.VUE_APP_ADMIN_API}/update_project`, {...editProjectData }, { headers: authHeader() }
-        );
-    }
-
-    deleteProject(id) {
-        return axios.put(
-            `${process.env.VUE_APP_ADMIN_API}/delete_project?id=${id}`, {}, {
-                headers: authHeader(),
-            }
-        );
-    }
-
-    participateInProject(participateInProjectData) {
-        return axios.put(
-            `${process.env.VUE_APP_ADMIN_API}/participate_in_project`, {...participateInProjectData }, { headers: authHeader() }
-        );
-    }
-
-    exitFromProject(exitFromProjectData) {
-        return axios.put(
-            `${process.env.VUE_APP_ADMIN_API}/exit_from_project`, {...exitFromProjectData }, { headers: authHeader() }
-        );
-    }
-
 
 }
 

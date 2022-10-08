@@ -2,9 +2,10 @@
   <DataTable
     :value="users"
     :paginator="true"
-    class="p-datatable-users p-users-table"
+    class="table"
     :class="1400 > windowWidth ? 'p-datatable-sm' : ''"
-    :rows="12"
+    :rows="6"
+    :rowClass="rowClass"
     dataKey="id"
     :rowHover="true"
     v-model:selection="selectedUsers"
@@ -12,26 +13,14 @@
     filterDisplay="menu"
     :loading="loading"
     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    currentPageReportTemplate="{first} - {last} of {totalRecords}"
     :globalFilterFields="['id', 'email', 'is_admin']"
     :scrollable="true"
     scrollHeight="flex"
+    headerStyle="border:none"
   >
     <template #header>
-      <div class="p-d-flex p-jc-between p-ai-center">
-        <div><h3 class="p-m-0">EMS Users list</h3></div>
-          <div>
-            <Button
-            label="Add new user"
-            icon="pi pi-user-plus"
-            iconPos="left"
-            class="p-button-info"
-            :class="1400 > windowWidth ? 'p-button-sm' : ''"
-            type="button"
-            @click="handleAddNewUser()"
-          />
-          </div>
-      </div>
+      <span class="text-inter text-primary heading-tertiary">Users list</span>
     </template>
     <template #empty> No users found. </template>
     <template #loading> Loading users data. Please wait. </template>
@@ -39,9 +28,9 @@
       field="id"
       header="ID"
       headerClass="p-column-header"
+      class="text-secondary text-small text-inter"
       sortable
       style="
-        max-width: 10%;
         max-width: 10%;
         display: flex;
         flex: 1 1 10%;
@@ -55,94 +44,56 @@
     <Column
       field="email"
       header="E-mail"
-      headerClass="p-column-header"
+      class="text-secondary text-small text-inter"
+      :class="isEmailColumnExtended ? 'table__column--extended' : 'table__column--collapsed'"
+      :headerClass="isEmailColumnExtended ? ' p-column-header table__column--extended' : 'p-column-header table__column--collapsed'"
       sortable
       :filterMenuStyle="{ width: '5rem' }"
-      style="
-        min-width: 20%;
-        max-width: 20%;
-        display: flex;
-        flex: 1 1 20%;
-        justify-content: flex-start;
-      "
     >
       <template #body="{ data }">
-        <div
-          :class="
-            data.email && data.email.length >= 20
-              ? 'p-overflow'
-              : 'p-white-space-no-wrap'
-          "
-          v-tooltip.top="
-            data.email && data.email.length >= 20 ? data.email : ''
-          "
-        >
-          {{ data.email }}
-        </div>
+       <span @click="toggleExtendColumn('email')">
+         {{ data.email }}
+       </span>
       </template>
     </Column>
      <Column
       field="first_name"
       header="First Name"
-      headerClass="p-column-header"
+      class="text-secondary text-small text-inter"
+      :class="isFNColumnExtended ? 'table__column--extended' : 'table__column--collapsed'"
+      :headerClass="isFNColumnExtended ? ' p-column-header table__column--extended' : 'p-column-header table__column--collapsed'"
       sortable
       :filterMenuStyle="{ width: '5rem' }"
-      style="
-        min-width: 20%;
-        max-width: 20%;
-        display: flex;
-        flex: 1 1 20%;
-        justify-content: flex-start;
-      "
     >
       <template #body="{ data }">
-        <div
-          :class="
-            data.first_name && data.first_name.length >= 20
-              ? 'p-overflow'
-              : 'p-white-space-no-wrap'
-          "
-          v-tooltip.top="
-            data.first_name && data.first_name.length >= 20 ? data.first_name : ''
-          "
-        >
-          {{ data.first_name }}
-        </div>
+         <span
+             @click="toggleExtendColumn('first_name')">
+           {{ data.first_name }} </span>
       </template>
     </Column>
      <Column
       field="last_name"
       header="Last Name"
-      headerClass="p-column-header"
+      class="text-secondary text-small text-inter"
+      :class="isLNColumnExtended ? 'table__column--extended' : 'table__column--collapsed'"
+      :headerClass="isLNColumnExtended ? ' p-column-header table__column--extended' : 'p-column-header table__column--collapsed'"
       sortable
       :filterMenuStyle="{ width: '5rem' }"
-      style="
-        min-width: 20%;
-        max-width: 20%;
-        display: flex;
-        flex: 1 1 20%;
-        justify-content: flex-start;
-      "
     >
       <template #body="{ data }">
-        <div
-          :class="
-            data.last_name && data.last_name.length >= 20
-              ? 'p-overflow'
-              : 'p-white-space-no-wrap'
-          "
-          v-tooltip.top="
-            data.last_name && data.last_name.length >= 20 ? data.last_name : ''
-          "
-        >
-          {{ data.last_name }}
-        </div>
+
+         <span
+             @click="toggleExtendColumn('last_name')" >
+           {{ data.last_name }}
+         </span>
       </template>
     </Column>
     <Column
       field="is_admin"
       sortable
+      header="Admin?"
       headerClass="p-column-header p-default-cursor"
+      class="text-secondary text-small text-inter"
       :showFilterMatchModes="false"
       style="
         max-width: 15%;
@@ -151,19 +102,17 @@
         justify-content: center;
       "
     >
-      <template #header>
-        {{ 1400 > windowWidth ? "is Admin ?" : "is Admin ?" }}
-      </template>
       <template #body="{ data }">
         <div
-          class="p-d-flex p-jc-center p-ai-center"
-          v-tooltip.top="data.is_admin ? 'User is admin' : 'User is not admin'"
+            class="p-d-flex p-jc-center p-ai-center"
+            v-tooltip.top="data.is_admin ? 'User is admin' : 'User is not admin'"
         >
-          <font-awesome-icon
-            :icon="['far', 'check-square']"
-            v-if="data.is_admin"
-          />
-          <font-awesome-icon :icon="['far', 'square']" v-if="!data.is_admin" />
+          <div class="checkbox">
+            <SvgIcon
+                :icon="data.is_admin ? 'checkmark' : 'close'"
+                :class="data.is_admin ? 'checkbox--checkmark' : 'checkbox--close'"
+            />
+          </div>
         </div>
       </template>
     </Column>
@@ -171,35 +120,38 @@
       field="actions"
       :showFilterMatchModes="false"
       headerClass="p-column-header p-default-cursor"
+      class="text-secondary text-small text-inter"
       style="
-        min-width: 15%;
         max-width: 15%;
         display: flex;
         flex: 1 1 15%;
         justify-content: center;
       "
     >
-      <template #header>
-        <div class="p-table-center-flex">Actions</div>
-      </template>
+      <template #header></template>
       <template #body="{ data }">
         <div class="p-d-flex p-jc-between">
           <div v-tooltip.top="'Delete user'" class="p-mr-4" @click="handleDeleteUser($event, data.id)">
-            <font-awesome-icon
-              :icon="['fas', 'user-minus']"
-              class="p-cursor-pointer p-color-remove"
-            />
+            <SvgIcon icon="delete" class="table__icon" />
           </div>
-          <div v-tooltip.top="'Edit user'">
-            <font-awesome-icon
-              :icon="['fas', 'user-edit']"
-              class="p-cursor-pointer p-color-edit"
-              @click="handleEditUser(data.id)"
-            />
+          <div v-tooltip.top="'Edit user'" @click="handleEditUser(data.id)">
+            <SvgIcon icon="edit" class="table__icon" />
           </div>
         </div>
       </template>
     </Column>
+    <template #footer>
+      <div class="table__footer">
+        <Button
+            type="button"
+            class="button button--secondary"
+            @click="handleAddNewUser()"
+        >
+          <span class="text-small text-inter">Add new user</span>
+        </Button>
+      </div>
+    </template>
+
   </DataTable>
 </template>
 
@@ -208,6 +160,7 @@ import { useWindowSize } from "vue-window-size";
 import { FilterMatchMode } from "primevue/api";
 import { useConfirm } from "primevue/useconfirm";
 import { ref } from "vue";
+import { rowClass } from "@/functions/utils";
 
 export default {
   name: "UsersTable",
@@ -253,7 +206,26 @@ export default {
             });
         }
 
+
+    const isEmailColumnExtended = ref (false);
+    const isFNColumnExtended = ref (false);
+    const isLNColumnExtended = ref (false);
+
+    const toggleExtendColumn = (column) => {
+      switch (column) {
+        case 'email':
+          isEmailColumnExtended.value = !isEmailColumnExtended.value;
+          break;
+        case 'first_name':
+          isFNColumnExtended.value = !isFNColumnExtended.value;
+          break;
+        case 'last_name':
+          isLNColumnExtended.value = !isLNColumnExtended.value;
+          break;
+      }
+    };
     return {
+      rowClass,
       filters,
       selectedUsers,
       handleEditUser,
@@ -261,6 +233,10 @@ export default {
       handleDeleteUser,
       windowWidth: width,
       windowHeight: height,
+      isEmailColumnExtended,
+      isFNColumnExtended,
+      isLNColumnExtended,
+      toggleExtendColumn
     };
   },
   emits: ["deleteUser", "editUser", "newUser"],

@@ -1,0 +1,8 @@
+.margin-right-2 {
+  margin-right: 2rem;
+}
+
+.center {
+  min-height: 100vh;
+ @include flex(row,center,center);
+}

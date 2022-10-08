@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="full-calendar" :class="isAdmin ? 'admin-calendar' : 'user-calendar'">
     <FullCalendar
       v-if="eventsData"
-      :key="eventsData"
+      :key="initialView"
       :options="options"
     />
   </div>
@@ -17,7 +17,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
 export default {
-  name: "EventsCalendar",
+  name: "Dashboard",
   components: { FullCalendar },
   props: {
     eventsData: {
@@ -29,30 +29,46 @@ export default {
         type: Boolean,
         required: true,
         default: false
+    },
+    initialView: {
+      type: String,
+      required: true,
+      default: ""
     }
   },
   setup(props) {
+
     const options = ref({
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       initialDate: new Date(),
-
       headerToolbar: {
-        left: "prev,next today",
-        center: "title",
-        right: props.isAdmin ? "" : "dayGridMonth,timeGridWeek,timeGridDay",
+        // left: "",
+        left: props.isAdmin ? "" : "dayGridMonth,dayGridWeek,dayGridDay",
+        center: "prev title next",
+        right: "today",
       },
-      editable: true,
-      selectable: true,
-      selectMirror: true,
+      views: {
+        dayGrid: {
+          dayHeaderFormat:
+    {  weekday: 'short',
+      ...(props.isAdmin && {
+        day: '2-digit',
+      }),
+    }
+        }
+           },
+      editable: false,
+      selectable: false,
+      selectMirror: false,
       dayMaxEvents: true,
-      height: "52.5vh",
+      height: "100%",
       events: [...props.eventsData.absences, ...props.eventsData.absencesBG],
-      eventBackgroundColor: "#666",
-      eventTextColor: "#fff",
-      initialView: props.isAdmin ? "dayGridWeek" : "dayGridMonth",
+      initialView: props.initialView
     });
 
-    return { options };
+    return {
+      options,
+    };
   },
 };
 </script>

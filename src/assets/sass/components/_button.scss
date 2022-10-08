@@ -1,0 +1,57 @@
+.button {
+  width: 100%;
+  font-size: 1.125rem;
+  @include flex(row, center, center);
+  padding-top: 0.938rem;
+  padding-bottom: 0.938rem;
+  transition: 0.5s all;
+
+  &--small {
+    padding: 0.625rem 2rem;
+  }
+
+  &--secondary {
+    background: $color-secondary;
+
+    &:enabled:hover {
+      background: $color-secondary-light-3;
+    }
+  }
+
+  &--secondary-outline {
+    color: $color-secondary;
+    background: $color-white;
+    border: 0.125rem solid $color-secondary;
+    box-sizing: border-box;
+    border-radius: 0.5rem;
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+
+    &:enabled:hover {
+      color: rgba($color-secondary, 0.7);
+      background: $color-white;
+      border: 0.125rem solid rgba($color-secondary, 0.7);
+    }
+  }
+
+  &--error-outline {
+    color: $color-error-1;
+    background: $color-white;
+    border: 0.125rem solid $color-error-1;
+    box-sizing: border-box;
+    border-radius: 0.5rem;
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+
+    &:enabled:hover {
+      color: rgba($color-error-1, 0.7);
+      background: $color-white;
+      border: 0.125rem solid rgba($color-error-1, 0.7);
+    }
+
+  }
+
+  &--small-font-size {
+    font-size: 0.875rem;
+  }
+}

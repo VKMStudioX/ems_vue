@@ -9,7 +9,6 @@ class AuthService {
         {
           email: user.email,
           password: user.password,
-          is_admin: false,
         },
         { headers: { Accept: "application/json" } }
       )

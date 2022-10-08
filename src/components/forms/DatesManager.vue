@@ -1,15 +1,13 @@
 <template>
-    <div :class="windowWidth > 576 ? 'p-m-4' : 'p-m-0'" class="p-user-data-form">
-        <h4 class="p-text-center p-text-uppercase p-m-4">{{ isAbsences ? 'Manage absences' : 'Manage holidays' }}</h4>
-        <div class="p-grid p-fluid p-flex-jc-stretch p-calendar">
-            <div class="p-xs-12 p-sm-8 p-md-8 ">
+  <div class="dates-manager">
+  <div class="dates-manager__calendar">
                 <Calendar
+                    :class="isAbsences ? 'absences-calendar' : 'holidays-calendar'"
                     v-model="dates"
                     dateFormat="yy-mm-dd"
                     :inline="true"
                     :showButtonBar="false"
                     :manualInput="false"
-                    style="max-height:460px;"
                     :minDate="isAbsences ? new Date() : new Date(1970, 0, 1)"
                     :maxDate="isAbsences ? new Date(Date.now() + 12096e5) : null"
                     selectionMode="multiple"
@@ -18,55 +16,52 @@
                 </Calendar>
             </div>
 
-            <div class="p-xs-12 p-sm-4 p-md-4">
+  <div class="dates-manager__list">
                 <DataTable
-                :key="dates"
                     :value="dates.sort((a,b) => a-b)"
                     responsiveLayout="scroll"
-                    class="p-datatable-sm"
+                    class="p-datatable-sm dates-table"
+                    :class="isAbsences ? 'absences-table' : 'holidays-table'"
                     :scrollable="true"
                     scrollHeight="flex"
-                    style="max-height: 460px; overflow-y: scroll;"
                 >
+                  <template #header>
+                        <span class="text-primary heading-tertiary">
+                          {{ isAbsences ? 'Absences' : 'Holidays' }}
+                        </span>
+                  </template>
                     <template #empty>No selections found</template>
-                    <Column :header="isAbsences ? 'Actual Absences' : 'Holidays'">
-                        <template #body="{ data }">
-                            <div
-                                class="p-selected-ships-body"
-                            >{{ dayjs(data).format("YYYY-MM-DD") }}</div>
-                            <div class="p-selected-ships-body p-ship-remove">
-                                <div>
-                                    <font-awesome-icon class="p-ml-2" :icon="['fas', 'times']" @click="handleRemoveOneDate(data)" />
-                                </div>
-                            </div>
+                    <Column>
+
+                      <template #body="{ data }" >
+                           <span class="text-small">
+                             {{ dayjs(data).format("YYYY-MM-DD") }}
+                           </span>
+                        <SvgIcon icon="close" class="dates-table__icon" @click="handleRemoveOneDate(data)" />
                         </template>
                     </Column>
                 </DataTable>
-            </div>
-        </div>
-        <div class="p-grid p-fluid p-jc-end">
-            <div class="p-xs-12 p-md-4 p-d-flex p-flex-row p-mr-3">
-          <Button
-            label="Clear"
-            icon="pi pi-times"
-            iconPos="left"
-            class="p-button-danger p-mr-2"
-            style="width: 49%;"
-            :class="1400 > windowWidth ? 'p-button-sm' : ''"
+
+    <div class="dates-manager__button_container">
+        <div></div>
+        <Button
+            class="button button--error-outline"
+            type="button"
             @click="handleRemoveAllDates()"
-          />
-          <Button
-            label="Confirm"
-            icon="pi pi-check"
-            iconPos="right"
-            class="p-button-success"
-            style="width: 49%;"
-            :class="1400 > windowWidth ? 'p-button-sm' : ''"
+        >
+          <span class="text-inter text-small">Clear</span>
+        </Button>
+
+        <Button
+            class="button button--secondary"
             type="submit"
-          />
-            </div>
-        </div>
+        >
+          <span class="text-inter text-small">Confirm</span>
+        </Button>
+
     </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -112,16 +107,19 @@ export default {
         }
         
         const handleRemoveAllDates = () => {
+          dates.value.length > 0 && createToast(
+              toast,
+              "warn",
+              `All dates successfully removed`,
+              "",
+              1000
+          );
             removedDates.value = dates.value.length > 0 ? dates.value : datesFromStore.value.length > 0 ? datesFromStore.value : []
             removeDuplicatesFromArray(removedDates)
             dates.value = []
-                createToast(
-          toast,
-          "warn",
-          `All dates successfully removed`,
-          "",
-          1000
-        );
+
+
+
         };
 
         onMounted(() => {
@@ -164,12 +162,12 @@ export default {
 </script>
 
 <style lang="scss">
-.p-calendar {
-    flex-direction: row;
-    width: 100%;
-
-    @media only screen and (max-width: 576px) {
-        flex-direction: column;
-    }
-}
+//.p-calendar {
+//    flex-direction: row;
+//    width: 100%;
+//
+//    @media only screen and (max-width: 576px) {
+//        flex-direction: column;
+//    }
+//}
 </style>

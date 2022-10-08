@@ -1,21 +1,5 @@
 import { helpers } from "vuelidate/lib/validators";
 
-export const getCookie = (cname) => {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(";");
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == " ") {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-};
-
 export const createToast = (toast, severity, summary, detail, life) => {
     toast.add({
         severity: severity,
@@ -108,7 +92,7 @@ export const validationFromAPI = (errorMsg, type) => (value) => {
     return valid >= 0;
 };
 
-export const validationAuthEmc = (errorMsg) => (value) => {
+export const validationAuthEms = (errorMsg) => (value) => {
     const valid =
         errorMsg.value.includes("invalid") ||
         errorMsg.value.includes("failed") ||
@@ -117,7 +101,6 @@ export const validationAuthEmc = (errorMsg) => (value) => {
         0;
     return valid >= 0;
 };
-
 
 
 export const createDateAsUTC = (date) => {
@@ -145,63 +128,4 @@ export const convertDateToUTC = (date) => {
 };
 
 
-export const getIconByName = (name) => {
-    let icon = ["", ""];
-
-    if (name.includes('React') || name.includes('Next') || name.includes('Gatsby')) {
-        icon = ["fab", "react"];
-    }
-    if (name.includes('Vue') || name.includes('Nuxt')) {
-        icon = ["fab", "vuejs"];
-    }
-    if (name.includes('Laravel')) {
-        icon = ["fab", "laravel"];
-    }
-    if (name.includes('Spring')) {
-        icon = ["fab", "java"];
-    }
-    if (name.includes('Ruby')) {
-        icon = ["far", "gem"];
-    }
-    if (name.includes('Django')) {
-        icon = ["fab", "python"];
-    }
-    if (name.includes('iOS')) {
-        icon = ["fab", "apple"];
-    }
-    if (name.includes('Android')) {
-        icon = ["fab", "android"];
-    }
-    if (name.includes('Express')) {
-        icon = ["fab", "node-js"];
-    }
-
-    return icon;
-}
-
-export const getMethodologyNameById = (methodologyId) => {
-    let name = ["", ""];
-
-    switch (methodologyId) {
-        case 1:
-            name = "SPA";
-            break;
-        case 2:
-            name = "SSR";
-            break;
-        case 3:
-            name = "SSG";
-            break;
-        case 4:
-            name = "Back-End+Front-End"
-            break;
-        case 5:
-            name = "REST Api";
-            break;
-        case 6:
-            name = "Mobile";
-            break;
-    }
-
-    return name;
-};
+export const rowClass = () => { return 'table__row' };
